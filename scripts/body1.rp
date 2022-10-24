@@ -1,0 +1,168 @@
+BODY|0,0,0,0|True|
+START:0 empty 0,0
+STAND:0 body1stand -32,-16
+RUN:0 body1run0 -32,-16
+RUN:8 body1run1 -32,-16
+RUN:16 body1run2 -32,-16
+RUN:24 body1run3 -32,-16
+RUN:32 body1run4 -32,-16
+JUMPSQUAT:0 body1jumpsquat -32,-16
+AIRIAL:0 body1air -32,-16
+
+|START:0|
+set self w 32
+set self h 64
+set self state STAND
+set self frame 0
+set self speed 10
+set self jumps 2
+set self jumpstr -15
+set self traction 0.8 * -1
+set self limit 20
+set self neglimit -20
+set self grav 1
+set self gun self.name + pistol
+create pistol0 self.gun self.x self.y
+exec updateGun
+
+|STAND:0|
+if x_vel != 0
+   exec applyTraction
+endif
+if inpLEFT != inpRIGHT
+   if inpLEFT
+      set self direction 1
+   endif
+   if inpRIGHT
+      set self direction -1
+   endif
+   set self state RUN
+   set self frame 0
+endif
+exec checkJump
+exec checkAir
+exec applyGrav
+exec updateGun
+
+|RUN:0|
+set self calc inpLEFT != inpRIGHT
+if self.calc
+   if inpLEFT
+      set self direction 1
+   endif
+   if inpRIGHT
+      set self direction -1
+   endif
+endif
+if not self.calc
+   set self state STAND
+endif
+set self x_vel self.speed * self.direction * -1
+exec checkJump
+exec checkAir
+exec applyGrav
+exec updateGun
+
+|RUN:40|
+set self frame 0
+exec RUN:0
+
+|JUMPSQUAT:0|
+exec updateGun
+
+|JUMPSQUAT:5|
+set self state AIRIAL
+set self frame 0
+set self y_vel self.jumpstr
+exec updateGun
+
+|AIRIAL:0|
+set self calc inpLEFT != inpRIGHT
+if self.calc
+   if inpLEFT
+      set self direction 1
+   endif
+   if inpRIGHT
+      set self direction -1
+   endif
+   set self x_vel self.speed * self.direction * -1
+endif
+if not self.calc
+   set self x_vel 0
+endif
+if A_DOWN in inpEVENTS and self.jumps
+   set self y_vel self.jumpstr
+   set self jumps self.jumps - 1
+   create djring0 self.name + ring self.x - 24 self.y + 32
+endif
+exec applyGrav
+exec updateGun
+
+|YCOLLISION|
+if self.state == AIRIAL
+   set self state STAND
+   set self frame 0
+   set self jumps 1
+endif
+
+|checkJump|
+if A_DOWN in inpEVENTS
+   set self state JUMPSQUAT
+   set self frame 0
+endif
+
+|applyTraction|
+if self.x_vel != 0
+   if self.x_vel > 0
+      set self x_vel self.traction + self.x_vel
+   endif
+   if self.x_vel < 0
+      set self x_vel self.traction * -1 + self.x_vel
+   endif
+endif
+if abs self.x_vel / 1 == 0
+   set self x_vel 0
+endif
+
+|checkAir|
+if self.y_vel
+   set self state AIRIAL
+   set self frame 0
+endif
+
+|applyGrav|
+set self y_vel self.y_vel + self.grav
+if self.y_vel > self.limit
+   set self y_vel self.limit
+endif
+if self.y_vel < self.neglimit
+   set self y_vel self.neglimit
+endif
+
+|updateGun|
+set self.gun _input_name self._input_name
+set self.gun state HELD
+if self.state == JUMPSQUAT
+   if self.direction == -1
+      set self.gun x self.x + 16 + self.x_vel
+      set self.gun y self.y + 40 + self.y_vel
+   endif
+   if self.direction == 1
+      set self.gun x self.x - 32 + self.x_vel
+      set self.gun y self.y + 40 + self.y_vel
+   endif
+endif
+if self.state != JUMPSQUAT
+   if self.direction == -1
+      set self.gun x self.x + 16 + self.x_vel
+      set self.gun y self.y + 32 + self.y_vel
+   endif
+   if self.direction == 1
+      set self.gun x self.x - 32 + self.x_vel
+      set self.gun y self.y + 32 + self.y_vel
+   endif
+endif
+set self.gun x_vel self.x_vel
+set self.gun x_vel self.y_vel
+set self.gun direction self.direction
+

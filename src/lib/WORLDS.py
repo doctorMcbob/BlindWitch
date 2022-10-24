@@ -1,1 +1,1 @@
-WORLDS = {'root': {'actors': [], 'background': None}}
+WORLDS = {'root': {'actors': ['player10', 'platformground0'], 'background': 'nightsky', 'name': 'root'}, 'loadzone': {'actors': ['djring0', 'pistol0'], 'background': 'nightsky', 'x_lock': None, 'y_lock': None, 'name': 'loadzone'}}

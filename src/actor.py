@@ -267,7 +267,7 @@ class Actor(Rect):
 
         placeholder = Surface((self.w, self.h))
         placeholder.fill((1, 255, 1))
-        print(self.sprites)
+        print(self.state, self.sprites)
         return placeholder
 
     def get_offset(self):
@@ -301,6 +301,7 @@ class Actor(Rect):
         if yflag != self.y_vel and int(self.y_vel) == 0:
             if abs(self.y_vel) < 1:
                 self.y_vel = 0
+
             if "YCOLLISION" in self.scripts:
                 if scripts.resolve(self.name, self.scripts["YCOLLISION"], world) == 'goodbye':
                     return
