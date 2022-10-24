@@ -1,0 +1,3 @@
+SPRITESHEETS = {}
+SPRITEMAPS = {}
+OFFSETS = {}

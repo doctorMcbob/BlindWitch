@@ -1,0 +1,2 @@
+HITBOXES = {}
+HURTBOXES = {}

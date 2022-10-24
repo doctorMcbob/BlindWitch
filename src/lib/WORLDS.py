@@ -1,0 +1,1 @@
+WORLDS = {'root': {'actors': [], 'background': None}}
