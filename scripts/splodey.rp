@@ -11,6 +11,15 @@ FANG:0 fang0 0,0
 FANG:1 fang1 0,0
 FANG:2 fang2 0,0
 FANG:3 fang3 0,0
+BLOOD:0 blood0 0,0
+BLOOD:1 blood1 0,0
+BLOOD:2 blood2 0,0
+BLOOD:3 blood3 0,0
+BLOOD:4 blood4 0,0
+BLOOD:5 blood5 0,0
+BLOOD:6 blood6 0,0
+BLOOD:7 blood7 0,0
+BLOOD:8 blood8 0,0
 START:0 empty 0,0
 BLOOD:0 empty 0,0
 
@@ -38,7 +47,7 @@ if self.imgs
 endif
 
 |XCOLLISION|
-goodbye
+set self x_vel self.x_vel * -1
 
 |YCOLLISION|
 goodbye

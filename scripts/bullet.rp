@@ -11,6 +11,9 @@ hitboxes bullet
 |BULLET:0|
 set self y_vel self.y_vel + self.grav
 
+|BULLET:500|
+goodbye
+
 |XCOLLISION|
 goodbye
 
@@ -18,4 +21,8 @@ goodbye
 goodbye
 
 |HIT|
+if self.name in related.name
+   break
+endif
 set self state SPLODE
+

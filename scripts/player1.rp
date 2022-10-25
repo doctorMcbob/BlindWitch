@@ -11,6 +11,7 @@ if isframe MAIN
    set self respawnx self.x
    set self respawny self.y
 endif
-if not isframe MAIN
+set self calc isframe MAIN
+if not self.calc
    goodbye
 endif

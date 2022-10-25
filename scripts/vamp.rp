@@ -20,10 +20,19 @@ set self jump_yv -20
 set self grav 1
 hitboxes vamp
 hurtboxes vamp
+set self run_sounds []
+add self.run_sounds vampire_run1
+add self.run_sounds vampire_run2
+add self.run_sounds vampire_run3
+set self walk_sounds []
+add self.walk_sounds vampire_walk1
+add self.walk_sounds vampire_walk2
+add self.walk_sounds vampire_walk3
 
 |WALK:1|
 set self x_vel self.walk_speed * self.direction * -1
 exec lookTurn
+sfx choiceof self.walk_sounds
 
 |WALK:2|
 exec applyTraction
@@ -31,6 +40,7 @@ exec applyTraction
 |WALK:17|
 set self x_vel self.walk_speed * self.direction * -1
 exec lookTurn
+sfx choiceof self.walk_sounds
 
 |WALK:18|
 exec applyTraction
@@ -43,7 +53,7 @@ exec WALK:2
 if RAND?
    set self direction self.direction * -1
 endif
-if RAND?
+if RAND? and RAND?
    set self state JUMPSQUAT
    set self frame 0
 endif
@@ -54,12 +64,13 @@ exec lookTurn
 |RUN:2|
 set self y_vel self.y_vel + self.grav
 exec applyTraction
+sfx choiceof self.run_sounds
 
 |RUN:17|
 if RAND?
    set self direction self.direction * -1
 endif
-if RAND?
+if RAND? and RAND?
    set self state JUMPSQUAT
    set self frame 0
 endif
@@ -69,6 +80,7 @@ exec lookTurn
 |RUN:18|
 exec applyTraction
 set self y_vel self.y_vel + self.grav
+sfx choiceof self.run_sounds
 
 |RUN:32|
 set self frame 0
@@ -82,6 +94,7 @@ set self x_vel 0
 set self state AIRIAL
 set self x_vel self.jump_xv * self.direction
 set self y_vel self.jump_yv
+sfx vampire_blah
 
 |AIRIAL:0|
 set self y_vel self.y_vel + self.grav
@@ -93,7 +106,7 @@ goodbye
 |YCOLLISION|
 if self.state == AIRIAL
    set self state RUN
-   if RAND?
+   if RAND? and RAND?
       set self frame 0
       set self state JUMPSQUAT
    endif
@@ -137,6 +150,7 @@ set self w self.old_w
 set self h self.old_h
 
 |splode|
+sfx vampire_death
 set self head self.name + head
 create splodey0 self.head self.x self.y
 add self.head.imgs vamphead0
@@ -170,4 +184,17 @@ add self.fang1.imgs fang1
 add self.fang1.imgs fang2
 add self.fang1.imgs fang3
 
+for _n sevenof
+   set self blood_n self.name + blood_n
+   create splodey0 self.blood_n self.x self.y
+   add self.blood_n.imgs blood0
+   add self.blood_n.imgs blood1
+   add self.blood_n.imgs blood2
+   add self.blood_n.imgs blood3
+endfor
+
+|HIT|
+if player in self.name
+   set self state SPLODE
+endif
 

@@ -70,14 +70,3 @@ def run_controller_menu(G, cb=lambda *args: None, args=None, noquit=False):
         G["FRAMES"].add_frame("MAIN", G["ROOT"], (G["W"]//2, G["H"]), pos=(0, 0))
         G["FRAMES"].add_frame("MAIN2", G["ROOT"], (G["W"]//2, G["H"]), pos=(G["W"]//2, 0))
 
-    elif len(players) == 3:
-        G["FRAMES"].add_frame("MAIN", G["ROOT"], (G["W"], G["H"]//2), pos=(0, 0))
-        G["FRAMES"].add_frame("MAIN2", G["ROOT"], (G["W"]//2, G["H"]//2), pos=(0, G["H"] // 2),)
-        G["FRAMES"].add_frame("MAIN3", G["ROOT"], (G["W"]//2, G["H"]//2), pos=(G["W"] // 2, G["H"] // 2))
-
-    elif len(players) >= 4:
-        G["FRAMES"].add_frame("MAIN", G["ROOT"], (G["W"]//2, G["H"]//2), pos=(0, 0))
-        G["FRAMES"].add_frame("MAIN2", G["ROOT"], (G["W"]//2, G["H"]//2), pos=(G["W"] // 2, 0))
-        G["FRAMES"].add_frame("MAIN3", G["ROOT"], (G["W"]//2, G["H"]//2), pos=(0, G["H"] // 2))
-        G["FRAMES"].add_frame("MAIN4", G["ROOT"], (G["W"]//2, G["H"]//2), pos=(G["W"] // 2, G["H"] // 2))
-

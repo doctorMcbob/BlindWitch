@@ -10,6 +10,7 @@ from src import scripts
 
 def set_up():
     pygame.init()
+    pygame.mixer.init()
     W = 1152 if "-w" not in sys.argv else int(sys.argv[sys.argv.index("-w")+1])
     H = 640 if "-h" not in sys.argv else int(sys.argv[sys.argv.index("-h")+1])
     G = {"W":W,"H":H}
@@ -27,6 +28,7 @@ def set_up():
     from src import printer
     from src import scripts
     from src import boxes
+    from src import sounds
     G["PRINTER"] = printer
     G["WORLDS"] = worlds
     G["FRAMES"] = frames
@@ -38,6 +40,7 @@ def set_up():
     worlds.load()
     actor.load()
     boxes.load()
+    sounds.load()
 
     G["INPUTS"] = inputs
     G["FRAMES"] = frames
@@ -120,5 +123,6 @@ def execute_console_command(G):
     if cmd.startswith("REF:"):
         G["REFERENCE"] = cmd.split(":")[-1]
     else:
-        scripts.resolve(G["REFERENCE"], cmd.splitlines(), G["FRAMES"].get_frame(list(G["FRAMEMAP"].keys())[0]).world)
+        scripts.resolve(G["REFERENCE"], [scripts.parse_tokens(cmd)],
+                        G["FRAMES"].get_frames()[0].world)
 

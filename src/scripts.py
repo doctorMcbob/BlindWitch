@@ -3,6 +3,7 @@ from src import frames
 from src import actor as a
 from src import worlds
 from src import boxes
+from src import sounds
 
 import operator as ops
 
@@ -250,6 +251,18 @@ def resolve(reference, script, world, related=None, logfunc=print):
                 world_ref = cmd.pop(0)
                 worlds.get_world(world_ref).flagged_for_update = True
 
+            elif verb == "sfx":
+                sounds.play_sound(cmd.pop(0))
+
+            elif verb == "song":
+                sounds.play_song(cmd.pop(0))
+
+            elif verb == "sfxoff":
+                sounds.stop_sounds()
+
+            elif verb == "songoff":
+                sounds.stop_song()
+            
             elif verb == "for": # gulp
                 key = cmd.pop(0)
                 target = deepcopy(cmd.pop())

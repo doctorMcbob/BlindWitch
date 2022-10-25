@@ -136,6 +136,7 @@ def update_frames(G):
 
 def set_up():
     pygame.init()
+    pygame.mixer.init()
     G = {}
     G["SCREEN"] = pygame.display.set_mode((1600, 1000))
     G["HEL16"] = pygame.font.SysFont("Helvetica", 16)

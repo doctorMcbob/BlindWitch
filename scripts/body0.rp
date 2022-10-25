@@ -8,6 +8,7 @@ RUN:24 body0run3 -32,-16
 RUN:32 body0run4 -32,-16
 JUMPSQUAT:0 body0jumpsquat -32,-16
 AIRIAL:0 body0air -32,-16
+SPLODE:0 empty 0,0
 
 |START:0|
 set self physics 1
@@ -26,6 +27,13 @@ set self gun self.name + pistol
 create pistol0 self.gun self.x self.y
 set self.gun state HELD
 set self.gun direction self.direction
+hurtboxes body
+set self run_sounds []
+add self.run_sounds player_run1
+add self.run_sounds player_run2
+set self death_sounds []
+add self.death_sounds player_death1
+add self.death_sounds player_death2
 
 |STAND:0|
 if x_vel != 0
@@ -40,6 +48,7 @@ if inpLEFT != inpRIGHT
    endif
    set self state RUN
    set self frame 0
+   sfx choiceof self.run_sounds
 endif
 exec checkJump
 exec checkAir
@@ -65,7 +74,15 @@ exec checkAir
 exec applyGrav
 exec updateGun
 
+|RUN:20|
+sfx choiceof self.run_sounds
+exec RUN:0
+
+|RUN:21|
+exec RUN:0
+
 |RUN:40|
+sfx choiceof self.run_sounds
 set self frame 0
 exec RUN:0
 
@@ -73,6 +90,7 @@ exec RUN:0
 exec updateGun
 
 |JUMPSQUAT:5|
+sfx player_jump
 set self state AIRIAL
 set self frame 0
 set self y_vel self.jumpstr
@@ -90,15 +108,26 @@ if self.calc
    set self x_vel self.speed * self.direction * -1
 endif
 if not self.calc
-   set self x_vel 0
+   if LEFT_UP in inpEVENTS
+      set self x_vel 0
+   endif
+   if RIGHT_UP in inpEVENTS
+      set self x_vel 0
+   endif
 endif
 if A_DOWN in inpEVENTS and self.jumps
+   sfx player_jump
    set self y_vel self.jumpstr
    set self jumps self.jumps - 1
    create djring0 self.name + ring self.x - 24 self.y + 32
 endif
 exec applyGrav
 exec updateGun
+
+|SPLODE:0|
+sfx choiceof self.death_sounds
+exec splode
+goodbye
 
 |YCOLLISION|
 if self.state == AIRIAL
@@ -145,3 +174,37 @@ endif
 set self.gun _input_name self._input_name
 set self.gun state HELD
 set self.gun player self.name
+
+|splode|
+set self.gun state GUN
+
+set self head body0 + head
+create splodey0 self.head self.x self.y
+add self.head.imgs body0head0
+add self.head.imgs body0head1
+add self.head.imgs body0head2
+add self.head.imgs body0head3
+
+set self hand0 body0 + hand0
+create splodey0 self.hand0 self.x self.y
+add self.hand0.imgs hand0
+add self.hand0.imgs hand1
+add self.hand0.imgs hand2
+add self.hand0.imgs hand3
+
+set self hand1 body0 + hand1
+create splodey0 self.hand1 self.x self.y
+add self.hand1.imgs hand0
+add self.hand1.imgs hand1
+add self.hand1.imgs hand2
+add self.hand1.imgs hand3
+
+for _n morelikesixteen
+   set self blood_n body0 + blood_n
+   create splodey0 self.blood_n self.x self.y
+   add self.blood_n.imgs blood0
+   add self.blood_n.imgs blood1
+   add self.blood_n.imgs blood2
+   add self.blood_n.imgs blood3
+endfor
+
