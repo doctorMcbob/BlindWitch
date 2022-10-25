@@ -135,8 +135,11 @@ set self old_y self.y
 set self old_w self.w
 set self old_h self.h
 set self y self.y + self.h
+if self.direction == -1
+   set self x self.w + self.x
+endif
 if self.direction == 1
-   set self x self.w / 2 + self.x
+   set self x self.x - self.w
 endif
 set self w self.w / 2
 set self h 32
