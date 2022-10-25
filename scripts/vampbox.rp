@@ -1,0 +1,34 @@
+HITBOX|0,0,0,0|False|
+START:0 empty 0,0
+LOOK:0 empty 0,0
+OFF:0 empty 0,0
+
+|START:0|
+set self number ""
+for char self.name
+    set self calc char in vampbox
+    if not self.calc
+       set self number self.number + char
+    endif
+endfor
+set self vamp vamp + self.number
+
+
+|OFF:0|
+goodbye
+
+|COLLIDE|
+set related calc exists related.vamp
+if not related.calc
+   set related state OFF
+   break
+endif
+if not self.calc
+   if player in self.name
+      if related.vamp.state == WALK
+      	 set related.vamp state JUMPSQUAT
+      	 set related.vamp frame 0
+      endif
+   endif
+endif
+

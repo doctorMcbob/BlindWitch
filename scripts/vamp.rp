@@ -6,6 +6,7 @@ RUN:0 vamprun0 -32,-16
 RUN:16 vamprun1 -32,-16
 JUMPSQUAT:0 vampjumpsquat -32,-16
 AIRIAL:0 vampattack0 -32,-16
+SPLODE:0 empty 0,0
 
 |START:0|
 set self direction -1
@@ -15,16 +16,21 @@ set self walk_speed 10
 set self traction 0.6 * -1
 set self run_speed 18
 set self jump_xv 32
-set self jump_yv 20
+set self jump_yv -20
+set self grav 1
+hitboxes vamp
+hurtboxes vamp
 
 |WALK:1|
 set self x_vel self.walk_speed * self.direction * -1
+exec lookTurn
 
 |WALK:2|
 exec applyTraction
 
 |WALK:17|
 set self x_vel self.walk_speed * self.direction * -1
+exec lookTurn
 
 |WALK:18|
 exec applyTraction
@@ -33,8 +39,69 @@ exec applyTraction
 set self frame 0
 exec WALK:2
 
+|RUN:1|
+if RAND?
+   set self direction self.direction * -1
+endif
+if RAND?
+   set self state JUMPSQUAT
+   set self frame 0
+endif
+
+set self x_vel self.run_speed * self.direction * -1
+exec lookTurn
+
+|RUN:2|
+set self y_vel self.y_vel + self.grav
+exec applyTraction
+
+|RUN:17|
+if RAND?
+   set self direction self.direction * -1
+endif
+if RAND?
+   set self state JUMPSQUAT
+   set self frame 0
+endif
+set self x_vel self.run_speed * self.direction * -1
+exec lookTurn
+
+|RUN:18|
+exec applyTraction
+set self y_vel self.y_vel + self.grav
+
+|RUN:32|
+set self frame 0
+exec RUN:2
+
+|JUMPSQUAT:0|
+set self y_vel self.y_vel + self.grav
+set self x_vel 0
+
+|JUMPSQUAT:8|
+set self state AIRIAL
+set self x_vel self.jump_xv * self.direction
+set self y_vel self.jump_yv
+
+|AIRIAL:0|
+set self y_vel self.y_vel + self.grav
+
+|SPLODE:0|
+exec splode
+goodbye
+
+|YCOLLISION|
+if self.state == AIRIAL
+   set self state RUN
+   if RAND?
+      set self frame 0
+      set self state JUMPSQUAT
+   endif
+endif
+
 |XCOLLISION|
 set self direction self.direction * -1
+set self x_vel self.x_vel * -1
 
 |applyTraction|
 if self.x_vel != 0
@@ -48,3 +115,59 @@ endif
 if abs self.x_vel / 1 == 0
    set self x_vel 0
 endif
+
+|lookTurn|
+set self old_x self.x
+set self old_y self.y
+set self old_w self.w
+set self old_h self.h
+set self y self.y + self.h
+if self.direction == 1
+   set self x self.w / 2 + self.x
+endif
+set self w self.w / 2
+set self h 32
+if not COLLIDE?
+   set self direction self.direction * -1
+   set self x_vel self.x_vel  * -1
+endif
+set self x self.old_x
+set self y self.old_y
+set self w self.old_w
+set self h self.old_h
+
+|splode|
+set self head self.name + head
+create splodey0 self.head self.x self.y
+add self.head.imgs vamphead0
+add self.head.imgs vamphead1
+
+set self arm0 self.name + arm0
+create splodey0 self.arm0 self.x self.y
+add self.arm0.imgs vamparm0
+add self.arm0.imgs vamparm1
+add self.arm0.imgs vamparm2
+add self.arm0.imgs vamparm3
+
+set self arm1 self.name + arm1
+create splodey0 self.arm1 self.x self.y
+add self.arm1.imgs vamparm0
+add self.arm1.imgs vamparm1
+add self.arm1.imgs vamparm2
+add self.arm1.imgs vamparm3
+
+set self fang0 self.name + fang0
+create splodey0 self.fang0 self.x self.y
+add self.fang0.imgs fang0
+add self.fang0.imgs fang1
+add self.fang0.imgs fang2
+add self.fang0.imgs fang3
+
+set self fang1 self.name + fang1
+create splodey0 self.fang1 self.x self.y
+add self.fang1.imgs fang0
+add self.fang1.imgs fang1
+add self.fang1.imgs fang2
+add self.fang1.imgs fang3
+
+

@@ -17,3 +17,5 @@ goodbye
 |YCOLLISION|
 goodbye
 
+|HIT|
+set self state SPLODE

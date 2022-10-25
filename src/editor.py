@@ -266,7 +266,10 @@ def add_actor(G, pos, template_name):
     template = deepcopy(TEMPLATES[template_name])
     template["POS"], template["DIM"] = rect
     n = 0
-    while actor.get_actor("{}{}".format(template_name, n)) is not None: n += 1
+    
+    while actor.get_actor("{}{}".format(template_name, n)) is not None:
+        print(actor.get_actor("{}{}".format(template_name, n)))
+        n += 1
     name = "{}{}".format(template_name, n)
     template["name"] = name
     ACTORS[name] = template

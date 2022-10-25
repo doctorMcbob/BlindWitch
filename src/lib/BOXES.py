@@ -1,2 +1,2 @@
-HITBOXES = {'bullet': {'START:0': [], 'BULLET:0': [((0, 0), (16, 16))]}}
-HURTBOXES = {'bullet': {'START:0': [], 'BULLET:0': []}}
+HITBOXES = {'bullet': {'START:0': [], 'BULLET:0': [((0, 0), (16, 16))]}, 'vamp': {'START:0': [], 'WALK:0': [], 'JUMPSQUAT:0': [((-2, 17), (37, 47))], 'AIRIAL:0': [((-19, -5), (71, 67))], 'RUN:0': [((20, 6), (23, 55))]}}
+HURTBOXES = {'bullet': {'START:0': [], 'BULLET:0': []}, 'vamp': {'START:0': [], 'WALK:0': [((3, -1), (34, 33)), ((0, 33), (31, 30))], 'JUMPSQUAT:0': [((2, 18), (31, 46))], 'AIRIAL:0': [((-3, 3), (36, 58))], 'RUN:0': [((-8, 5), (42, 56))]}}
