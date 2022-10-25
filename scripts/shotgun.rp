@@ -91,7 +91,7 @@ if self.player.state == JUMPSQUAT
          set self y self.player.y + 16
       endif
        if self.aim == -1
-          set self x self.player.x
+          set self x self.player.x + 16
 	  set self y self.player.y + 40
        endif
    endif
@@ -104,7 +104,7 @@ if self.player.state != JUMPSQUAT
       endif
       if self.aim == 1
          set self x self.player.x + 16
-         set self y self.player.y + 16
+         set self y self.player.y
       endif
        if self.aim == -1
           set self x self.player.x + 16
@@ -118,10 +118,10 @@ if self.player.state != JUMPSQUAT
       endif
       if self.aim == 1
          set self x self.player.x
-         set self y self.player.y + 16
+         set self y self.player.y
       endif
        if self.aim == -1
-          set self x self.player.x
+          set self x self.player.x + 16
 	  set self y self.player.y + 40
        endif
    endif
@@ -166,7 +166,7 @@ if self.direction == -1
          create bullet0 self.bname self.x self.y
          set self.bname x_vel self.player.x_vel + RAND? + RAND? + RAND?
          set self.bname y_vel self.bul_xv * -1 + self.player.y_vel + RAND? + RAND? + RAND?
-         set self.blast x self.x - 16
+         set self.blast x self.x
          set self.blast y self.y - 32
       endfor
    endif
@@ -177,7 +177,7 @@ if self.direction == -1
          create bullet0 self.bname self.x self.y + 32
          set self.bname x_vel self.player.x_vel + RAND? + RAND? + RAND?
          set self.bname y_vel self.bul_xv + self.player.y_vel + RAND? + RAND? + RAND?
-         set self.blast x self.x
+         set self.blast x self.x - 16
          set self.blast y self.y + 8
       endfor
    endif
@@ -201,7 +201,7 @@ if self.direction == 1
          create bullet0 self.bname self.x self.y
          set self.bname x_vel self.player.x_vel + RAND? + RAND? + RAND?
 	 set self.bname y_vel self.bul_xv * -1 + self.player.y_vel + RAND? + RAND? + RAND?
-         set self.blast x self.x
+         set self.blast x self.x - 16
          set self.blast y self.y - 32
       endfor
    endif
@@ -212,7 +212,7 @@ if self.direction == 1
          create bullet0 self.bname self.x self.y + 32
          set self.bname x_vel self.player.x_vel + RAND? + RAND? + RAND?
          set self.bname y_vel self.bul_xv + self.player.y_vel + RAND? + RAND? + RAND?
-         set self.blast x self.x - 16
+         set self.blast x self.x
          set self.blast y self.y + 8
       endfor
    endif

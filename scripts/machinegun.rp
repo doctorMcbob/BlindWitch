@@ -95,7 +95,7 @@ if self.player.state == JUMPSQUAT
          set self y self.player.y + 16
       endif
        if self.aim == -1
-          set self x self.player.x
+          set self x self.player.x + 16
 	  set self y self.player.y + 40
        endif
    endif
@@ -108,7 +108,7 @@ if self.player.state != JUMPSQUAT
       endif
       if self.aim == 1
          set self x self.player.x + 16
-         set self y self.player.y + 16
+         set self y self.player.y
       endif
        if self.aim == -1
           set self x self.player.x + 16
@@ -122,10 +122,10 @@ if self.player.state != JUMPSQUAT
       endif
       if self.aim == 1
          set self x self.player.x
-         set self y self.player.y + 16
+         set self y self.player.y
       endif
        if self.aim == -1
-          set self x self.player.x
+          set self x self.player.x + 16
 	  set self y self.player.y + 40
        endif
    endif
