@@ -1,0 +1,19 @@
+BULLET|0,0,0,0|False|
+START:0 empty 0,0
+BULLET:0 bullet 0,0
+
+|START:0|
+set self state BULLET
+set self physics 1
+set self grav 0.5
+hitboxes bullet
+
+|BULLET:0|
+set self y_vel self.y_vel + self.grav
+
+|XCOLLISION|
+goodbye
+
+|YCOLLISION|
+goodbye
+

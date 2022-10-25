@@ -4,16 +4,21 @@ HELD:0 pistolhold -8,-8
 GUN:0 pistol 0,0
 
 |START:0|
-set self timer_max 20
+set self timer_max 10
 set self timer self.timer_max
 set self state GUN
 set self aim 0
+set self bullet_num 0
+set self bul_xv 25
+set self bul_yv -3
+set self rotation 0
+set self kb 5
 
 |HELD:0|
 exec updateRotation
 exec updatePosition
 if self.timer <= 0 and inpB
-   print shoot
+   exec shoot
    set self timer self.timer_max
 endif
 set self timer self.timer - 1
@@ -29,6 +34,15 @@ if inpUP != inpDOWN
 endif
 if inpUP == inpDOWN
    set self aim 0
+endif
+
+|COLLIDE|
+if related.state == GUN
+   if player in self.name
+      set self.gun state GUN
+      set self gun related.name
+      set self.gun state HELD
+   endif
 endif
 
 |updatePosition|
@@ -104,5 +118,65 @@ if self.aim != 0
    set self w 16
    set self h 48
 endif
-set self rotation self.aim * 90 * self.direction * -1
+set self rotation self.aim * 90
+if self.direction
+   set self rotation self.rotation * self.direction * -1
+endif
 
+|shoot|
+if self.direction == -1
+   if self.aim == 0
+      set self bname self.name + bullet + self.bullet_num
+      set self bullet_num self.bullet_num + 1
+      create bullet0 self.bname self.x self.y
+      set self.bname x_vel self.bul_xv + self.player.x_vel
+      set self.bname y_vel self.bul_yv + self.player.y_vel
+   endif
+   if self.aim == 1
+      set self bname self.name + bullet + self.bullet_num
+      set self bullet_num self.bullet_num + 1
+      create bullet0 self.bname self.x self.y
+      set self.bname x_vel self.player.x_vel
+      set self.bname y_vel self.bul_xv * -1 + self.player.y_vel
+   endif
+   if self.aim == -1
+      set self bname self.name + bullet + self.bullet_num
+      set self bullet_num self.bullet_num + 1
+      create bullet0 self.bname self.x self.y + 32
+      set self.bname x_vel self.player.x_vel
+      set self.bname y_vel self.bul_xv + self.player.y_vel
+   endif
+endif
+if self.direction == 1
+   if self.aim == 0
+      set self bname self.name + bullet + self.bullet_num
+      set self bullet_num self.bullet_num + 1
+      create bullet0 self.bname self.x + self.w self.y
+      set self.bname x_vel self.bul_xv * -1 + self.player.x_vel
+      set self.bname y_vel self.bul_yv + self.player.y_vel
+   endif
+   if self.aim == 1
+      set self bname self.name + bullet + self.bullet_num
+      set self bullet_num self.bullet_num + 1
+      create bullet0 self.bname self.x self.y
+      set self.bname x_vel self.player.x_vel
+      set self.bname y_vel self.bul_xv * -1 + self.player.y_vel
+   endif
+   if self.aim == -1
+      set self bname self.name + bullet + self.bullet_num
+      set self bullet_num self.bullet_num + 1
+      create bullet0 self.bname self.x self.y + 32
+      set self.bname x_vel self.player.x_vel
+      set self.bname y_vel self.bul_xv + self.player.y_vel
+   endif
+endif
+
+if self.aim == 0
+   set self.player x_vel self.kb * self.direction + self.player.x_vel
+endif
+if self.aim == 1
+   set self.player y_vel self.kb  + self.player.y_vel
+endif
+if self.aim == -1
+   set self.player y_vel self.kb * -1 + self.player.y_vel
+endif

@@ -1,0 +1,50 @@
+VAMP|0,0,0,0|False|
+START:0 empty 0,0
+WALK:0 vampwalk0 -32,-16
+WALK:16 vampwalk1 -32,-16
+RUN:0 vamprun0 -32,-16
+RUN:16 vamprun1 -32,-16
+JUMPSQUAT:0 vampjumpsquat -32,-16
+AIRIAL:0 vampattack0 -32,-16
+
+|START:0|
+set self direction -1
+set self physics 1
+set self state WALK
+set self walk_speed 10
+set self traction 0.6 * -1
+set self run_speed 18
+set self jump_xv 32
+set self jump_yv 20
+
+|WALK:1|
+set self x_vel self.walk_speed * self.direction * -1
+
+|WALK:2|
+exec applyTraction
+
+|WALK:17|
+set self x_vel self.walk_speed * self.direction * -1
+
+|WALK:18|
+exec applyTraction
+
+|WALK:32|
+set self frame 0
+exec WALK:2
+
+|XCOLLISION|
+set self direction self.direction * -1
+
+|applyTraction|
+if self.x_vel != 0
+   if self.x_vel > 0
+      set self x_vel self.traction + self.x_vel
+   endif
+   if self.x_vel < 0
+      set self x_vel self.traction * -1 + self.x_vel
+   endif
+endif
+if abs self.x_vel / 1 == 0
+   set self x_vel 0
+endif

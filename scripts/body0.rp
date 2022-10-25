@@ -1,4 +1,4 @@
-BODY|0,0,0,0|True|
+BODY|0,0,0,0|False|
 START:0 empty 0,0
 STAND:0 body0stand -32,-16
 RUN:0 body0run0 -32,-16
@@ -10,6 +10,7 @@ JUMPSQUAT:0 body0jumpsquat -32,-16
 AIRIAL:0 body0air -32,-16
 
 |START:0|
+set self physics 1
 set self w 32
 set self h 64
 set self state STAND
@@ -23,6 +24,8 @@ set self neglimit -20
 set self grav 1
 set self gun self.name + pistol
 create pistol0 self.gun self.x self.y
+set self.gun state HELD
+set self.gun direction self.direction
 
 |STAND:0|
 if x_vel != 0
