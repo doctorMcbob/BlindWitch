@@ -10,10 +10,13 @@ PHASE:30 ghost1 0,0
 PHASE:35 ghost0 0,0
 
 |START:0|
-set self state PHASE
+set self state WAIT
 set self frame 0
 set self speed 128
 hitboxes ghost
+set self ghost_sounds []
+add self.ghost_sounds ghost_in
+add self.ghost_sounds ghost_out
 
 |PHASE:40|
 set self state WAIT
@@ -47,6 +50,10 @@ endif
 set self calc exists self.target
 if not self.calc
    goodbye
+endif
+if self.dist < 512
+
+   sfx choiceof self.ghost_sounds
 endif
 if self.target.x > self.x
    set self calc min self.dist self.speed
