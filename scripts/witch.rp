@@ -77,7 +77,8 @@ set self frame 0
 |HIT:20|
 if self.hits > 0
    set self hits self.hits - 1
-   set self state RAGE
+   set self state THROW
+   set self frame 0
    break
 endif
 set eyeballtarget0 state OFF
