@@ -3,6 +3,7 @@ START:0 empty 0,0
 HELD:0 pistolhold -8,-8
 GUN:0 pistol 0,0
 OFF:0 empty 0,0
+DUAL:0 empty 0,0
 
 |START:0|
 set self timer_max 10
@@ -17,6 +18,9 @@ set self kb 5
 set self shot_sounds []
 add self.shot_sounds pistol_fire1
 add self.shot_sounds pistol_fire2
+set self physics 1
+set self x_vel 0
+set self y_vel 0
 
 |OFF:0|
 goodbye
@@ -25,6 +29,7 @@ goodbye
 rebrand dualwield
 
 |HELD:0|
+front
 exec updateRotation
 exec updatePosition
 if self.timer <= 0 and inpB
@@ -62,15 +67,17 @@ if related.state == GUN
       if pistol in self.gun
          set self.gun state OFF
 	 set related state DUAL
+	 
          set self calc self.name in self.gun
       	 if self.calc
        	    set self.gun state DUAL
 	    set related state OFF
+	    break
 	 endif
 	 if not self.calc
 	    set self gun related.name
+            break
 	 endif
-	 break
       endif
       set self gun related.name
       set self.gun state HELD
@@ -78,8 +85,6 @@ if related.state == GUN
 endif
 
 |updatePosition|
-set self x_vel self.player.x_vel
-set self x_vel self.player.y_vel
 set self direction self.player.direction
 
 if self.player.state == JUMPSQUAT

@@ -18,6 +18,7 @@ set self shot_sounds []
 add self.shot_sounds machinegun_fire1
 add self.shot_sounds machinegun_fire2
 add self.shot_sounds machinegun_fire3
+set self physics 1
 
 |OFF:0|
 goodbye
@@ -26,6 +27,7 @@ goodbye
 rebrand dualwield
 
 |HELD:0|
+front
 exec updateRotation
 exec updatePosition
 if self.timer <= 0 and inpB
@@ -66,8 +68,6 @@ if related.state == GUN
 endif
 
 |updatePosition|
-set self x_vel self.player.x_vel
-set self x_vel self.player.y_vel
 set self direction self.player.direction
 
 if self.player.state == JUMPSQUAT

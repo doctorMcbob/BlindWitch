@@ -27,6 +27,7 @@ set self gun self.name + pistol
 create pistol0 self.gun self.x self.y
 set self.gun state HELD
 set self.gun direction self.direction
+exec updateGun
 hurtboxes body
 set self run_sounds []
 add self.run_sounds player_run1

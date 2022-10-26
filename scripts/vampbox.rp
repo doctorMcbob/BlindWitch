@@ -13,22 +13,24 @@ for char self.name
 endfor
 set self vamp vamp + self.number
 
-
 |OFF:0|
-goodbye
+set self calc exists self..vamp
+if not related
+   break
+endif
+set self state LOOK
+set self frame 0
 
 |COLLIDE|
-set related calc exists related.vamp
-if not related.calc
+set self calc exists related.vamp
+if not self.calc
    set related state OFF
    break
 endif
-if not self.calc
-   if player in self.name
-      if related.vamp.state == WALK
-      	 set related.vamp state JUMPSQUAT
-      	 set related.vamp frame 0
-      endif
+if player in self.name
+   if related.vamp.state == WALK
+      set related.vamp state JUMPSQUAT
+      set related.vamp frame 0
    endif
 endif
 

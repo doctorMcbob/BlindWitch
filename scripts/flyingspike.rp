@@ -1,0 +1,51 @@
+DOOR|0,0,0,0|False|
+START:0 spike 0,0
+SPIKE:0 spike 0,0
+FLY:0 spike 0,0
+
+|START:0|
+set self state SPIKE
+set self direction -1
+set self physics 1
+set self speed -25
+set self orig_x self.x
+set self orig_y self.y
+
+|SPIKE:0|
+set self frame 0
+hitboxes spike
+set self calc1 0
+set self calc2 0
+set self calc3 0
+if exists player10
+   set self calc1 player10.x > self.x
+   set self calc1 self.x + self.w > player10.x and self.calc1
+   set self calc2 player10.x + player10.w
+   set self calc3 self.calc2 > self.x
+   set self calc3 self.x + self.w > self.calc2 and self.calc3
+endif
+set self calc4 0
+set self calc5 0
+set self calc6 0
+if exists player20
+   set self calc4 player20.x > self.x
+   set self calc4 self.x + self.w > player20.x and self.calc4
+   set self calc5 player20.x + player20.w
+   set self calc6 self.calc5 > self.x
+   set self calc6 self.x + self.w > self.calc2 and self.calc6
+endif
+if self.calc3 or self.calc1
+   set self state FLY
+endif
+
+|FLY:0|
+set self y_vel self.speed
+
+|FLY:400|
+set self x self.orig_x
+set self y self.orig_y
+set self y_vel 0
+
+|HIT|
+set self state SPLODE
+

@@ -18,6 +18,7 @@ add self.shot_sounds pistol_fire1
 add self.shot_sounds pistol_fire2
 
 |HELD:0|
+front
 exec updateRotation
 exec updatePosition
 if self.timer <= 0 and inpB

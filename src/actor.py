@@ -289,6 +289,7 @@ class Actor(Rect):
         xflag, yflag = self.x_vel, self.y_vel
         if self.physics or self.tangible:
             self.collision_check(world)
+            
             self.x += int(self.x_vel)
             self.y += int(self.y_vel)
 
