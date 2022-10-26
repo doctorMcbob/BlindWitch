@@ -31,7 +31,6 @@ if exists player10
    if player10.y < self.t
       break
    endif
-
    if isframe MAIN 
       scrollbound MAIN left self.x
       scrollbound MAIN bottom self.y + self.h

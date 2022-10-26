@@ -51,8 +51,9 @@ set self calc exists self.target
 if not self.calc
    goodbye
 endif
+set self speed 512
 if self.dist < 512
-
+   set self speed 128
    sfx choiceof self.ghost_sounds
 endif
 if self.target.x > self.x

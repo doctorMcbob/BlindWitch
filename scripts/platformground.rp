@@ -10,6 +10,7 @@ PLATFORM21 platformground21 0,0
 PLATFORM22 platformground22 0,0
 
 |START:0|
+set self noWO 1
 set self state PLATFORM
 set self platform 1
 

@@ -10,14 +10,17 @@ set self init 0
 set self frame 0
 
 |COLLIDE|
-set self calc background in self.name
-set self calc self.noWO or self.calc
-if not self.calc
-   if related.init
-      place self related.A
-      update related.A
+if self.noWO
+   break
+endif
+if background in self.name
+   break
+endif
 
-      place self related.B
-      update related.B
-   endif
+if related.init
+   place self related.A
+   update related.A
+
+   place self related.B
+   update related.B
 endif
