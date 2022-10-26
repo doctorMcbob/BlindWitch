@@ -1,0 +1,45 @@
+EYE|0,0,0,0|False|
+START:0 empty 0,0
+EYE:0 eyeu 0,0
+EYE:0 eyed 0,0
+EYE:0 eyen 0,0
+SPLODE:0 empty 0,0
+
+|START:0|
+set self state EYE
+set self physics 1
+set self grav 0.5
+hitboxes eyeball
+hurtboxes eyeball
+
+|EYE:0|
+img eyen
+if self.y_vel < -5
+   img eyeu
+endif
+if self.y_vel > 5
+   img eyed
+endif
+set self y_vel self.y_vel + self.grav
+
+|EYE:500|
+goodbye
+
+|SPLODE:0|
+exec splode
+goodbye
+
+|XCOLLISION|
+exec splode
+goodbye
+
+|YCOLLISION|
+exec splode
+goodbye
+
+|HIT|
+if self.name in related.name
+   break
+endif
+set self state SPLODE
+

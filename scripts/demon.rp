@@ -1,0 +1,63 @@
+DEMON|0,0,0,0|False|
+START:0 empty 0,0
+WAIT:0 deamonclosed 0,0
+WAIT:5 deamonopen 0,0
+SPLODE:0 deamonhit0 0,0
+HIT:0 deamonhit0 0,0
+HIT:8 deamonhit1 0,0
+HIT:11 deamonhit0 0,0
+HIT:19 deamonhit1 0,0
+HIT:21 deamonhit0 0,0
+DIE:0 deamondie0 0,0
+DIE:4 deamondie1 0,0
+DIE:8 deamondie2 0,0
+DIE:16 deamondie3 0,0
+
+|START:0|
+set self state WAIT
+set self frame 0
+hitboxes demon
+hurtboxes demon
+set self hits 25
+back
+
+|WAIT:0|
+# todo
+
+|WAIT:20|
+set self frame 0
+exec WAIT:0
+
+|SPLODE:0|
+exec splode
+set self state HIT
+set self frame 0
+
+|HIT:29|
+set self hits self.hits - 1
+set self state WAIT
+set self frame 0
+if self.hits < 0
+   set self state DIE
+   set self frame 0
+endif
+
+|DIE:20|
+print "You won!"
+goodbye
+
+|HIT|
+if player in self.name
+   set self state SPLODE
+endif
+
+|splode|
+for _n afewmorethenthose
+   set self blood_n self.name + blood_n
+   create splodey0 self.blood_n self.x self.y
+   add self.blood_n.imgs blood0
+   add self.blood_n.imgs blood1
+   add self.blood_n.imgs blood2
+   add self.blood_n.imgs blood3
+endfor
+
