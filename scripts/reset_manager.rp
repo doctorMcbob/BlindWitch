@@ -1,0 +1,30 @@
+MGMT|0,0,0,0|False|
+START:0 empty 0,0
+LOOK:0 empty 0,0
+WAIT:0 empty 0,0
+
+|START:0|
+set self state LOOK
+
+|LOOK:0|
+if exists player10
+   break
+endif
+if exists player20
+   break
+endif
+set self state WAIT
+set self frame 0
+
+|WAIT:40|
+if isframe MAIN
+   killframe MAIN
+endif
+if isframe MAIN2
+   killframe MAIN2
+endif
+reset
+activate BOOT
+set boot0 frame 0
+set self frame LOOK
+set self frame 0

@@ -4,6 +4,7 @@ from src import actor as a
 from src import worlds
 from src import boxes
 from src import sounds
+from src import game
 
 import operator as ops
 
@@ -76,7 +77,10 @@ def resolve(reference, script, world, related=None, logfunc=print):
 
             elif verb == "break":
                 return
-            
+
+            elif verb == "reset":
+                game.load()
+
             elif verb == "set":
                 actor, att, value = cmd
                 if actor == "related" and related is not None:
@@ -145,7 +149,7 @@ def resolve(reference, script, world, related=None, logfunc=print):
             elif verb == "makeframe":
                 name, world, x, y, w, h = cmd
                 frames.add_frame(name, world, (w, h), (x, y))
-                
+
             elif verb == "focus":
                 frame = frames.get_frame(cmd.pop(0))
                 actor = cmd.pop(0)
@@ -416,6 +420,9 @@ def resolve_operators(cmd, world, logfunc=print):
             if token == "isframe":
                 frame = frames.get_frame(cmd.pop(idx+1))
                 evaluated.append(frame is not None)
+            elif token == "isinputstate":
+                inputstate = inputs.get_state(cmd.pop(idx+1))
+                evaluated.append(inputstate is not None)
             elif token == "choiceof":
                 item = cmd.pop(idx+1)
                 if not type(item) == list:

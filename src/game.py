@@ -7,6 +7,18 @@ from src import inputs
 from src.utils import get_text_input
 from src import menu
 from src import scripts
+from src import sprites
+from src import worlds
+from src import frames
+from src import actor
+from src import printer
+from src import scripts
+from src import boxes
+from src import sounds
+
+def load():
+    actor.load()
+    worlds.load()
 
 def set_up():
     pygame.init()
@@ -21,19 +33,6 @@ def set_up():
     G["SCREEN"].fill((255, 255, 255))
     G["SCREEN"].blit(G["HEL32"].render("Loading...", 0, (0, 0, 0)), (0, 0))
     pygame.display.update()
-    from src import sprites
-    from src import worlds
-    from src import frames
-    from src import actor
-    from src import printer
-    from src import scripts
-    from src import boxes
-    from src import sounds
-    G["PRINTER"] = printer
-    G["WORLDS"] = worlds
-    G["FRAMES"] = frames
-    G["SCRIPTS"] = scripts
-    G["ACTOR"] = actor
     G["ROOT"] = worlds.root if "-r" not in sys.argv else sys.argv[sys.argv.index("-r")+1]
     sprites.load()
     scripts.load()
@@ -43,7 +42,6 @@ def set_up():
     sounds.load()
 
     G["INPUTS"] = inputs
-    G["FRAMES"] = frames
     menu.run_controller_menu(G)
     
     G["CLOCK"] = pygame.time.Clock()
@@ -55,9 +53,13 @@ def run(G, noquit=False):
         if inputs.update(noquit) == "QUIT":
             return
 
-        worlds_for_updating = [frame.world for frame in G["FRAMES"].get_frames()]
+        worlds_for_updating = [
+            frame.world for frame in filter(
+                lambda f: f.active, frames.get_frames()
+            )
+        ]
 
-        for world in G["WORLDS"].get_worlds():
+        for world in worlds.get_worlds():
 
             if world not in worlds_for_updating and world.flagged_for_update:
                 worlds_for_updating.append(world)
@@ -66,11 +68,11 @@ def run(G, noquit=False):
             world.flagged_for_update = False
             world.update()
 
-        for actor in  G["ACTOR"].get_actors():
-            actor.updated = False
+        for a in  actor.get_actors():
+            a.updated = False
 
         blitz = []
-        for frame in G["FRAMES"].get_frames():
+        for frame in frames.get_frames():
             if not frame.active: 
                 continue
             frame.update()
@@ -100,12 +102,11 @@ def run(G, noquit=False):
                 (0, 16))
 
         pygame.display.update()
-        if "PRINTER" in G:
-            G["PRINTER"].save_surface(G["SCREEN"])
-            if any(["CLIP" in inputs.get_state(state)["EVENTS"] for state in inputs.STATES]):
-                G["PRINTER"].save_em()
-                G["PRINTER"].make_gif()
-                G["PRINTER"].clear_em()
+        printer.save_surface(G["SCREEN"])
+        if any(["CLIP" in inputs.get_state(state)["EVENTS"] for state in inputs.STATES]):
+            printer.save_em()
+            printer.make_gif()
+            printer.clear_em()
 
         if "DEBUG" in G and G["DEBUG"]:
             if any(["CONSOLEDEBUG" in inputs.get_state(state)["EVENTS"] for state in inputs.STATES]):
@@ -124,5 +125,5 @@ def execute_console_command(G):
         G["REFERENCE"] = cmd.split(":")[-1]
     else:
         scripts.resolve(G["REFERENCE"], [scripts.parse_tokens(cmd)],
-                        G["FRAMES"].get_frames()[0].world)
+                        frames.get_frames()[0].world)
 

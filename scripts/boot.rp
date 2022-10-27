@@ -1,0 +1,29 @@
+MGMT|0,0,0,0|False|
+START:0 empty 0,0
+WAIT:0 splashintro 64,0
+
+|START:0|
+set self direction -1
+set self state WAIT
+set self frame 0
+set self player1_exists isinputstate PLAYER1
+set self player2_exists isinputstate PLAYER2
+
+set self _input_name PLAYER1
+
+|WAIT:120|
+deactivate BOOT
+if self.player1_exists and self.player2_exists
+   makeframe MAIN graveyardstart 0 0 1152 320
+   makeframe MAIN2 graveyardstart 0 320 1152 320
+   break
+endif
+if self.player1_exists
+   makeframe MAIN graveyardstart 0 0 1152 640
+   break
+endif
+if self.player2_exists
+   makeframe MAIN2 graveyardstart 0 640 1152 640
+   break
+endif
+

@@ -52,6 +52,9 @@ def swap_in(actors):
 def load():
     from src.lib import ACTORS as A
 
+    for key in list(ACTORS.keys()):
+        ACTORS.pop(key)
+
     for name in A.ACTORS.keys():
         TEMPLATES[name] = A.ACTORS[name]
     for name in A.ACTORS.keys():
