@@ -1,0 +1,18 @@
+inviswall|0,0,0,0|False|
+START:0 empty 0,0
+WAIT:0 empty 0,0
+WALL:0 empty 0,0
+
+|START:0|
+set self state WAIT
+set self frame 0
+
+|COLLIDE|
+if body in self.offsetkey
+   set fighttriggerdoor0 target self.name
+   if exists witch0
+      if witch0.state == WAIT
+         set witch0 state RAGE
+      endif
+   endif
+endif

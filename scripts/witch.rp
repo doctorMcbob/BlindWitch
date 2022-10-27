@@ -23,9 +23,10 @@ TRANSFORM:105 witchtransform5 0,0
 TRANSFORM:113 witchtransform6 0,0
 TRANSFORM:121 witchtransform7 0,0
 OFF:0 empty 0,0
+WAIT:0 empty 0,0
 
 |START:0|
-set self state RAGE
+set self state WAIT
 set self frame 0
 set self hits 12
 set self throw_x 5
@@ -102,45 +103,19 @@ if player in self.name
 endif
 
 |throw|
-set self eye_name self.name + eye + self.eye_num
-set self eye_num self.eye_num + 1
-create eyeballattack0 self.eye_name self.x self.y
-set self.eye_name x_vel RAND? + RAND? * 3 + self.throw_x * self.direction
-set self.eye_name y_vel RAND? + RAND? * 3 + self.throw_y
-set self.eye_name direction self.direction * -1
-
-set self eye_name self.name + eye + self.eye_num
-set self eye_num self.eye_num + 1
-create eyeballattack0 self.eye_name self.x self.y
-set self.eye_name x_vel RAND? + RAND? * 3 + self.throw_x * self.direction * -1
-set self.eye_name y_vel RAND? + RAND? * 3 + self.throw_y
-set self.eye_name direction self.direction
-
-set self eye_name self.name + eye + self.eye_num
-set self eye_num self.eye_num + 1
-create eyeballattack0 self.eye_name self.x self.y
-set self.eye_name x_vel RAND? + RAND? * 3 + self.throw_x * self.direction
-set self.eye_name y_vel RAND? + RAND? * 3 + self.throw_y
-set self.eye_name direction self.direction * -1
-
-set self eye_name self.name + eye + self.eye_num
-set self eye_num self.eye_num + 1
-create eyeballattack0 self.eye_name self.x self.y
-set self.eye_name x_vel RAND? + RAND? * 3 + self.throw_x * self.direction * -1
-set self.eye_name y_vel RAND? + RAND? * 3 + self.throw_y
-set self.eye_name direction self.direction
-
-set self eye_name self.name + eye + self.eye_num
-set self eye_num self.eye_num + 1
-create eyeballattack0 self.eye_name self.x self.y
-set self.eye_name x_vel RAND? + RAND? * 3 + self.throw_x * self.direction
-set self.eye_name y_vel RAND? + RAND? * 3 + self.throw_y
-set self.eye_name direction self.direction * -1
-
-set self eye_name self.name + eye + self.eye_num
-set self eye_num self.eye_num + 1
-create eyeballattack0 self.eye_name self.x self.y
-set self.eye_name x_vel RAND? + RAND? * 3 + self.throw_x * self.direction * -1
-set self.eye_name y_vel RAND? + RAND? * 3 + self.throw_y
-set self.eye_name direction self.direction
+for ___ thr   
+   set self eye_name self.name + eye + self.eye_num
+   set self eye_num self.eye_num + 1
+   create eyeballattack0 self.eye_name self.x + 64 self.y + 64
+   set self.eye_name x_vel RAND? + RAND? * 3 + self.throw_x * self.direction
+   set self.eye_name y_vel RAND? + RAND? * 3 + self.throw_y
+   set self.eye_name direction self.direction * -1
+   
+   set self eye_name self.name + eye + self.eye_num
+   set self eye_num self.eye_num + 1
+   create eyeballattack0 self.eye_name self.x + 64 self.y + 64
+   set self.eye_name x_vel RAND? + RAND? * 3 + self.throw_x * self.direction * -1
+   set self.eye_name y_vel RAND? + RAND? * 3 + self.throw_y
+   set self.eye_name direction self.direction
+endfor
 

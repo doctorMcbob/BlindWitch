@@ -12,14 +12,14 @@ for char self.name
     endif
 endfor
 set self vamp vamp + self.number
+set self state LOOK
 
 |OFF:0|
-set self calc exists self..vamp
-if not related
-   break
+if exists self.vamp
+   set self state LOOK
+   set self frame 0
 endif
-set self state LOOK
-set self frame 0
+exec setVamp
 
 |COLLIDE|
 set self calc exists related.vamp
@@ -32,5 +32,19 @@ if player in self.name
       set related.vamp state JUMPSQUAT
       set related.vamp frame 0
    endif
+endif
+
+|setVamp|
+set self number ""
+for char self.name
+    set self calc char in vampbox
+    if not self.calc
+       set self number self.number + char
+    endif
+endfor
+set self vamp vamp + self.number
+set self state OFF
+if exists self.vamp
+   set self state LOOK
 endif
 

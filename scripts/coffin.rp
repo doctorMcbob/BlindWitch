@@ -1,7 +1,8 @@
 HITBOX|0,0,0,0|False|
 START:0 empty 0,0
 WAIT:0 coffin0 0,0
-SPAWN:0 coffin1 0,0
+SPAWN:0 coffin0 0,0
+SPAWN:160 coffin1 0,0
 
 |START:0|
 set self number ""
@@ -30,7 +31,7 @@ endif
 set self state SPAWN
 set self frame 0
 
-|SPAWN:18|
+|SPAWN:200|
 set self state WAIT
 set self frame 0
 set self timer self.timer_max

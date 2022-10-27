@@ -90,7 +90,7 @@ exec RUN:2
 set self y_vel self.y_vel + self.grav
 set self x_vel 0
 
-|JUMPSQUAT:8|
+|JUMPSQUAT:16|
 set self state AIRIAL
 set self x_vel self.jump_xv * self.direction
 set self y_vel self.jump_yv

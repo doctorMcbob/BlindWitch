@@ -2,6 +2,20 @@ DEMON|0,0,0,0|False|
 START:0 empty 0,0
 WAIT:0 deamonclosed 0,0
 WAIT:5 deamonopen 0,0
+WAIT:10 deamonclosed 0,0
+WAIT:15 deamonopen 0,0
+WAIT:20 deamonclosed 0,0
+WAIT:25 deamonopen 0,0
+WAIT:30 deamonclosed 0,0
+WAIT:35 deamonopen 0,0
+WAIT:40 deamonclosed 0,0
+WAIT:45 deamonopen 0,0
+WAIT:50 deamonclosed 0,0
+WAIT:55 deamonopen 0,0
+FIREBALL:0 deamonfireballstart 0,0
+FIREBALL:12 deamonfireballshoot 0,0
+ZAP:0 deamonzapstart 0,0
+ZAP:10 deamonzapshoot 0,0
 SPLODE:0 deamonhit0 0,0
 HIT:0 deamonhit0 0,0
 HIT:8 deamonhit1 0,0
@@ -12,21 +26,69 @@ DIE:0 deamondie0 0,0
 DIE:4 deamondie1 0,0
 DIE:8 deamondie2 0,0
 DIE:16 deamondie3 0,0
+END:0 deamondie0 0,0
+END:4 deamondie1 0,0
+END:8 deamondie2 0,0
+END:16 deamondie3 0,0
 
 |START:0|
 set self state WAIT
 set self frame 0
 hitboxes demon
 hurtboxes demon
-set self hits 25
+set self hits 18
+set self fire_num 0
+set self ox self.x
+set self oy self.y
+set self tx 0
+set self ty 0
+set self speed 16
 back
 
-|WAIT:0|
-# todo
+|WAIT:29|
+exec updateTarget
 
-|WAIT:20|
+|WAIT:30|
+if self.x > self.tx
+   set self direction 1
+   set self x self.x - self.speed
+endif
+if self.x < self.tx
+   set self direction -1
+   set self x self.x + self.speed
+endif
+if self.y > self.ty
+   set self y self.y - self.speed
+endif
+if self.y < self.ty
+   set self y self.y + self.speed
+endif
+
+|WAIT:60|
+if RAND?
+   set self state ZAP
+   if RAND?
+      set self state FIREBALL
+   endif
+endif
 set self frame 0
-exec WAIT:0
+
+|FIREBALL:12|
+exec fireball
+
+|FIREBALL:25|
+set self state WAIT
+set self frame 0
+
+|ZAP:10|
+exec zap
+
+|ZAP:11|
+break
+
+|ZAP:25|
+set self state WAIT
+set self frame 0
 
 |SPLODE:0|
 exec splode
@@ -42,8 +104,11 @@ if self.hits < 0
    set self frame 0
 endif
 
-|DIE:20|
+|DIE:30|
 print "You won!"
+goodbye
+
+|END:30|
 goodbye
 
 |HIT|
@@ -60,4 +125,52 @@ for _n afewmorethenthose
    add self.blood_n.imgs blood2
    add self.blood_n.imgs blood3
 endfor
+
+|fireball|
+set self fireball self.name + fireball + self.fire_num
+create fireattack0 self.fireball self.x + 64 self.y + 64
+set self.fireball x_vel RAND? + RAND? * 3 + 15 * self.direction * -1
+set self fire_num self.fire_num + 1
+
+|zap|
+for _n thismany
+   set self zap_n self.name + zap_n
+   create zapattack0 self.zap_n self.x + 64 self.y + 64
+   set self.zap_n x_vel RAND? + RAND? + RAND? + RAND? * 2 + 12 * self.direction * -1
+   set self.zap_n y_vel RAND? + RAND? + RAND? + RAND? * -2 + -3
+endfor
+
+|updateTarget|
+set self calc1 1000000
+if exists player10
+   set self calc self.x - player10.x
+   set self calc1 abs self.calc
+   set self d1 1
+   if self.x - player10.x < 0
+      set self d1 -1
+   endif
+endif
+set self calc2 1000000
+if exists player20
+   set self calc self.x - player20.x
+   set self calc2 abs self.calc
+   set self d2 1
+   if self.x - player20.x < 0
+      set self d2 -1
+   endif
+endif
+set self target player10
+set self dist self.calc1
+if self.calc2 < self.calc1
+   set self target player20
+   set self dist self.calc2
+endif
+set self calc exists self.target
+if not self.calc
+   set self state END
+   set self frame 0
+   break
+endif
+set self tx self.target.x
+set self ty self.target.y
 
