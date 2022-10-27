@@ -15,6 +15,7 @@ set self bul_yv -5
 set self rotation 0
 set self kb 20
 set self physics 1
+
 |OFF:0|
 goodbye
 
@@ -46,7 +47,7 @@ if related.frame < 30
    break
 endif
 if related.state == GUN
-   if player in self.name and self.gun
+   if body in self.offsetkey
       if self.gun == related.name
       	 break
       endif

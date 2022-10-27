@@ -18,6 +18,10 @@ from src import boxes
 from copy import deepcopy
 from pathlib import Path
 
+import random
+
+random.seed(0)
+
 ROOT_PATH = Path('.')
 PATH_TO_TASES = ROOT_PATH / ("tas/" if "-o" not in sys.argv else "tas/" + sys.argv[sys.argv.index("-o") + 1])
 
@@ -146,10 +150,9 @@ def load_save_state(G, frame):
 
 def draw(G):
     blitz = []
-    for name in G["FRAMEMAP"]:
-        frame = G["FRAMES"].get_frame(name)
+    for frame in G["FRAMES"].get_frames():
         if not frame.active: continue
-        position = G["FRAMEMAP"][name]
+        position = frame.pos
         drawn = frame.drawn(DEBUG=G) if "DEBUG" in G and G["DEBUG"] else frame.drawn()
         blitz.append((drawn, position))
     G["SCREEN"].blits(blitz)
@@ -164,6 +167,8 @@ def input_callback(G):
             HUD_LOCATION[key] = mpos[0], mpos[1] + 100 * (int(key[-1])-1)
     draw(G)
     for key in inputs.get_state_keys():
+        if key not in HUD_LOCATION:
+            continue
         update_input_deck(G, HUD_LOCATION[key], key, clicks)
         draw_input_deck(G, HUD_LOCATION[key], key)
     inputs.update_tas(G["TAS"], G["FRAME"])
@@ -297,7 +302,7 @@ def run(G, noquit=False):
             return
         G["FRAME"] += 1
 
-        worlds_for_updating = [G["FRAMES"].get_frame(name).world for name in G["FRAMEMAP"]]
+        worlds_for_updating = [frame.world for frame in G["FRAMES"].get_frames()]
 
         for world in G["WORLDS"].get_worlds():
 
@@ -312,11 +317,11 @@ def run(G, noquit=False):
             actor.updated = False
 
         blitz = []
-        for name in G["FRAMEMAP"]:
-            frame = G["FRAMES"].get_frame(name)
+
+        for frame in G["FRAMES"].get_frames():
             if not frame.active: continue
             frame.update()
-            position = G["FRAMEMAP"][name]
+            position = frame.pos
             drawn = frame.drawn(DEBUG=G) if "DEBUG" in G and G["DEBUG"] else frame.drawn()
             blitz.append((drawn, position))
 

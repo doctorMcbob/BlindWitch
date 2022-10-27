@@ -39,22 +39,21 @@ if exists player10
    endif
 endif
 if exists player20
-   if player10.x > self.right
+   if player20.x < self.x
       break
    endif
-   if player10.y < self.bottom
+   if player20.y > self.bottom
       break
    endif
-   if player10.x > self.r
+   if player20.x > self.r
       break
    endif
-   if player10.y < self.t
+   if player20.y < self.t
       break
    endif
-
    if isframe MAIN2
-      scrollbound MAIN2 top self.x
-      scrollbound MAIN2 right self.y + self.h
+      scrollbound MAIN2 left self.x
+      scrollbound MAIN2 bottom self.y + self.h
       scrollbound MAIN2 top self.t
       scrollbound MAIN2 right self.r
    endif
