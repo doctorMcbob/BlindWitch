@@ -18,6 +18,9 @@ set self timer self.timer_max
 set self state WAIT
 set self frame 0
 set self direction -1
+set self spawn_sounds []
+add self.spawn_sounds vamp_spawn1
+add self.spawn_sounds vamp_spawn2
 
 |WAIT:0|
 set self calc exists self.vamp
@@ -32,6 +35,7 @@ set self state SPAWN
 set self frame 0
 
 |SPAWN:200|
+sfx choiceof self.spawn_sounds
 set self state WAIT
 set self frame 0
 set self timer self.timer_max

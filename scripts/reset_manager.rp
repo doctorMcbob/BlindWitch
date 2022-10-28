@@ -24,7 +24,6 @@ if isframe MAIN2
    killframe MAIN2
 endif
 reset
-activate BOOT
-set boot0 frame 0
+activate MENU
 set self frame LOOK
 set self frame 0

@@ -5,7 +5,6 @@ import os
 
 from src import inputs
 from src.utils import get_text_input
-from src import menu
 from src import scripts
 from src import sprites
 from src import worlds
@@ -27,7 +26,7 @@ def set_up():
     H = 640 if "-h" not in sys.argv else int(sys.argv[sys.argv.index("-h")+1])
     G = {"W":W,"H":H}
     G["SCREEN"] = pygame.display.set_mode((W, H)) if "-f" not in sys.argv else pygame.display.set_mode((W, H), pygame.FULLSCREEN)
-    pygame.display.set_caption("Red Pants Deluxe 2")
+    pygame.display.set_caption("Rage of the Blind Witch")
     G["HEL32"] = pygame.font.SysFont("Helvetica", 32)
     G["HEL16"] = pygame.font.SysFont("Helvetica", 16)
     G["SCREEN"].fill((255, 255, 255))
@@ -40,10 +39,13 @@ def set_up():
     actor.load()
     boxes.load()
     sounds.load()
+    if sprites.get_sprite("icon"):
+        pygame.display.set_icon(
+            sprites.get_sprite("icon"))
 
-    G["INPUTS"] = inputs
-    menu.run_controller_menu(G)
-    
+    inputs.set_defaults()    
+    frames.add_frame("BOOT", G["ROOT"], (G["W"], G["H"]), pos=(0, 0))
+
     G["CLOCK"] = pygame.time.Clock()
     G["DEBUG"] = "-d" in sys.argv
     return G
@@ -82,25 +84,6 @@ def run(G, noquit=False):
 
         G["SCREEN"].blits(blitz)
 
-        # maybe remove FPS counter before release, dont worry about it for a while though
-        fps = G["CLOCK"].get_fps()
-        msg = ""
-        if fps < 15:
-            msg = 'very significant lag'
-        elif fps < 20:
-            msg = 'legit lag'
-        elif fps < 25:
-            msg = 'lag'
-        elif fps < 29:
-            msg = 'minor lag'
-        G["SCREEN"].blit(
-            G["HEL16"].render("FPS:{}".format(fps), 0, (0, 0, 0)),
-            (0, 0))
-        if msg:
-            G["SCREEN"].blit(
-                G["HEL16"].render(msg, 0, (0, 0, 0)),
-                (0, 16))
-
         pygame.display.update()
         printer.save_surface(G["SCREEN"])
         if any(["CLIP" in inputs.get_state(state)["EVENTS"] for state in inputs.STATES]):
@@ -109,7 +92,8 @@ def run(G, noquit=False):
             printer.clear_em()
 
         if "DEBUG" in G and G["DEBUG"]:
-            if any(["CONSOLEDEBUG" in inputs.get_state(state)["EVENTS"] for state in inputs.STATES]):
+            if any(["CONSOLEDEBUG" in inputs.get_state(state)["EVENTS"]
+                    for state in inputs.STATES]):
                 execute_console_command(G)
         
         G["CLOCK"].tick(30)

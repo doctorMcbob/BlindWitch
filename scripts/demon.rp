@@ -26,6 +26,7 @@ DIE:0 deamondie0 0,0
 DIE:4 deamondie1 0,0
 DIE:8 deamondie2 0,0
 DIE:16 deamondie3 0,0
+DIE:23 empty 0,0
 END:0 deamondie0 0,0
 END:4 deamondie1 0,0
 END:8 deamondie2 0,0
@@ -44,9 +45,16 @@ set self tx 0
 set self ty 0
 set self speed 16
 back
+set self roar_sounds []
+add self.roar_sounds demon_roar1
+add self.roar_sounds demon_roar2
+
+|WAIT:0|
+set song_manager0 song bosstwo
 
 |WAIT:29|
 exec updateTarget
+sfx choiceof self.roar_sounds
 
 |WAIT:30|
 if self.x > self.tx
@@ -65,13 +73,15 @@ if self.y < self.ty
 endif
 
 |WAIT:60|
+set self frame 0
 if RAND?
    set self state ZAP
    if RAND?
       set self state FIREBALL
    endif
+   break
 endif
-set self frame 0
+sfx demon_smash
 
 |FIREBALL:12|
 exec fireball
@@ -100,12 +110,24 @@ set self hits self.hits - 1
 set self state WAIT
 set self frame 0
 if self.hits < 0
+   sfx demon_death
    set self state DIE
    set self frame 0
 endif
 
-|DIE:30|
-print "You won!"
+|DIE:90|
+if isframe MAIN
+   killframe MAIN
+endif
+if isframe MAIN2
+   killframe MAIN2
+endif
+if isframe ENDSCENE
+   activate ENDSCENE   
+   goodbye
+   break
+endif
+makeframe ENDSCENE endscene 0 0 1152 640
 goodbye
 
 |END:30|
@@ -127,12 +149,14 @@ for _n afewmorethenthose
 endfor
 
 |fireball|
+sfx demon_flame
 set self fireball self.name + fireball + self.fire_num
 create fireattack0 self.fireball self.x + 64 self.y + 64
 set self.fireball x_vel RAND? + RAND? * 3 + 15 * self.direction * -1
 set self fire_num self.fire_num + 1
 
 |zap|
+sfx demon_zap
 for _n thismany
    set self zap_n self.name + zap_n
    create zapattack0 self.zap_n self.x + 64 self.y + 64

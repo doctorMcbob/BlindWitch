@@ -6,6 +6,7 @@ EYE:0 eyen -16,0
 SPLODE:0 empty 0,0
 
 |START:0|
+sft eye_shoot
 set self state EYE
 set self physics 1
 set self grav 0.5
@@ -47,6 +48,8 @@ endif
 set self state SPLODE
 
 |splode|
+sfx eye_splat
+
 set self puple self.name + puple
 create splodey0 self.puple self.x self.y
 add self.puple.imgs eyepup0

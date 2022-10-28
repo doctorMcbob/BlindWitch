@@ -19,6 +19,7 @@ set self frame 0
 if witch0.state != RAGE
    break
 endif
+sfx witch_hit
 set witch0 state HIT
 set self state TARGET
 set self frame 0

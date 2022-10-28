@@ -14,6 +14,7 @@ from random import randint, choice
 
 import string
 import traceback
+import sys
 
 operators = {
     "+": ops.add,
@@ -67,19 +68,24 @@ def resolve(reference, script, world, related=None, logfunc=print):
         try:
             verb = cmd.pop(0)
 
-            if verb == "goodbye":
+            if verb == "quit":
+                sys.exit()
+
+            elif verb == "goodbye":
                 for w in worlds.get_worlds():
                     if reference in w.actors:
                         w.actors.remove(reference)
                 a.delete_actor(reference)
                 return 'goodbye'
 
-
             elif verb == "break":
                 return
 
             elif verb == "reset":
                 game.load()
+
+            elif verb == "update_sticks":
+                inputs.update_sticks()
 
             elif verb == "set":
                 actor, att, value = cmd
@@ -136,11 +142,13 @@ def resolve(reference, script, world, related=None, logfunc=print):
 
             elif verb == "activate":
                 frame = frames.get_frame(cmd.pop(0))
-                frame.active = True
+                if frame is not None:
+                    frame.active = True
 
             elif verb == "deactivate":
                 frame = frames.get_frame(cmd.pop(0))
-                frame.active = False
+                if frame is not None:
+                    frame.active = False
 
             elif verb == "killframe":
                 name = cmd.pop(0)
@@ -360,6 +368,8 @@ def evaluate_literals(cmd, reference, world, related=None, logfunc=print):
         try:
             if token == "RAND?":
                 cmd[idx] = randint(0, 1)
+            if token == "song?":
+                cmd[idx] = sounds.get_song()
             if token == "COLLIDE?":
                 actor = a.get_actor(reference)
                 actors = list(filter(lambda actr:not (actr is actor), world.get_actors()[::-1]))

@@ -25,6 +25,7 @@ TRANSFORM:121 witchtransform7 0,0
 OFF:0 empty 0,0
 WAIT:0 empty 0,0
 
+
 |START:0|
 set self state WAIT
 set self frame 0
@@ -39,6 +40,7 @@ set self d -1
 hitboxes witch
 
 |FLY:0|
+sfx witch_cackle
 if self.timer_max * -1 > self.timer
    set self timer 9
    set self state RAGE
@@ -77,6 +79,9 @@ set self frame 0
 
 |HIT:20|
 if self.hits > 0
+   if self.hits < 4
+      sfx witch_no
+   endif
    set self hits self.hits - 1
    set self state THROW
    set self frame 0
@@ -88,6 +93,7 @@ set eyeballtarget1 state OFF
 set eyeballtarget2 state OFF
 set eyeballtarget3 state OFF
 set self state TRANSFORM
+sfx witch_transform
 
 |TRANSFORM:130|
 create demon0 FINALBOSS self.x self.y
