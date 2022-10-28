@@ -10,7 +10,6 @@ from src import sprites
 from src import worlds
 from src import frames
 from src import actor
-from src import printer
 from src import scripts
 from src import boxes
 from src import sounds
@@ -22,8 +21,8 @@ def load():
 def set_up():
     pygame.init()
     pygame.mixer.init()
-    W = 1152 if "-w" not in sys.argv else int(sys.argv[sys.argv.index("-w")+1])
-    H = 640 if "-h" not in sys.argv else int(sys.argv[sys.argv.index("-h")+1])
+    W = 1152 
+    H = 640 
     G = {"W":W,"H":H}
     G["SCREEN"] = pygame.display.set_mode((W, H)) if "-f" not in sys.argv else pygame.display.set_mode((W, H), pygame.FULLSCREEN)
     pygame.display.set_caption("Rage of the Blind Witch")
@@ -32,7 +31,7 @@ def set_up():
     G["SCREEN"].fill((255, 255, 255))
     G["SCREEN"].blit(G["HEL32"].render("Loading...", 0, (0, 0, 0)), (0, 0))
     pygame.display.update()
-    G["ROOT"] = worlds.root if "-r" not in sys.argv else sys.argv[sys.argv.index("-r")+1]
+    G["ROOT"] = worlds.root
     sprites.load()
     scripts.load()
     worlds.load()
@@ -47,7 +46,7 @@ def set_up():
     frames.add_frame("BOOT", G["ROOT"], (G["W"], G["H"]), pos=(0, 0))
 
     G["CLOCK"] = pygame.time.Clock()
-    G["DEBUG"] = "-d" in sys.argv
+    G["DEBUG"] = False
     return G
 
 def run(G, noquit=False):
@@ -85,17 +84,7 @@ def run(G, noquit=False):
         G["SCREEN"].blits(blitz)
 
         pygame.display.update()
-        printer.save_surface(G["SCREEN"])
-        if any(["CLIP" in inputs.get_state(state)["EVENTS"] for state in inputs.STATES]):
-            printer.save_em()
-            printer.make_gif()
-            printer.clear_em()
 
-        if "DEBUG" in G and G["DEBUG"]:
-            if any(["CONSOLEDEBUG" in inputs.get_state(state)["EVENTS"]
-                    for state in inputs.STATES]):
-                execute_console_command(G)
-        
         G["CLOCK"].tick(30)
 
 
