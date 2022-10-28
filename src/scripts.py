@@ -430,6 +430,16 @@ def resolve_operators(cmd, world, logfunc=print):
             if token == "isframe":
                 frame = frames.get_frame(cmd.pop(idx+1))
                 evaluated.append(frame is not None)
+            elif token == "hasframe":
+                world = worlds.get_world(cmd.pop(idx+1))
+                hasframe = False
+                for frame in frames.get_frames():
+                    if not frame.active: continue
+                    if frame.world == world:
+                        hasframe = True
+                        break
+                evaluated.append(hasframe)
+                    
             elif token == "isinputstate":
                 inputstate = inputs.get_state(cmd.pop(idx+1))
                 evaluated.append(inputstate is not None)
