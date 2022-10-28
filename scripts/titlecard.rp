@@ -3,7 +3,6 @@ START:0 titlecard 0,0
 BACK:0 titlecard 0,0
 
 |START:0|
-set self direction -1
 set self state BACK
 
 |BACK:0|

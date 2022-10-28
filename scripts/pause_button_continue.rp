@@ -4,7 +4,6 @@ NOTSELECTED:0 resume0 0,0
 SELECTED:0 resume1 0,0
 
 |START:0|
-set self direction -1
 set self state NOTSELECTED
 set self frame 0
 set self _input_name PLAYER1
