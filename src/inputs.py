@@ -57,6 +57,20 @@ MAPPED_CONTROLLERS = {
         "Y"      : 3,
         "START"  : 7,
     },
+    "Controller (Xbox for windows)": {
+        "A"      : 0,
+        "B"      : 2,
+        "X"      : 1,
+        "Y"      : 3,
+        "START"  : 7,
+    },
+    "Controller (Xbox for Windows)": {
+        "A"      : 0,
+        "B"      : 2,
+        "X"      : 1,
+        "Y"      : 3,
+        "START"  : 7,
+    },
     "Nintendo Co., Ltd. Pro Controller": {
         "A"      : 0,
         "B"      : 2,
@@ -89,7 +103,8 @@ def set_defaults():
 def update_sticks():
     if "PLAYER2" in STATES: return
     joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
-
+    pygame.event.pump()
+    
     for joy in joysticks:
         if not joy.get_init():
             joy.init()
