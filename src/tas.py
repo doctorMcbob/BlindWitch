@@ -64,9 +64,9 @@ def set_up():
     G["DEBUG"] = "-d" in sys.argv
 
     G["TAS"] = {} if "-tas" not in sys.argv else get_tas(sys.argv[sys.argv.index("-tas")+1])
-    if not G["TAS"]:
-        for key in inputs.get_state_keys():
-            HUD_LOCATION[key] = 100, 100 * (int(key[-1]) - 1)
+    for key in inputs.get_state_keys():
+        HUD_LOCATION[key] = 100, 100 * (int(key[-1]) - 1)
+        if not G["TAS"]:
             G["TAS"][key] = {}
     G["FRAME"] = 0
 
@@ -171,7 +171,6 @@ def input_callback(G):
             continue
         update_input_deck(G, HUD_LOCATION[key], key, clicks)
         draw_input_deck(G, HUD_LOCATION[key], key)
-    inputs.update_tas(G["TAS"], G["FRAME"])
 
 def update_input_deck(G, pos, input_state_key, clicks):
     global CLICK_LOCK
@@ -184,53 +183,124 @@ def update_input_deck(G, pos, input_state_key, clicks):
 
     if pygame.Rect((x+32, y+64), (16, 16)).collidepoint(mpos) and clicks[0]:
         CLICK_LOCK = clicks[0]
-        if ("LEFT_UP" if input_state["LEFT"] else "LEFT_DOWN") not in tas_events:
-            tas_events.append("LEFT_UP" if input_state["LEFT"] else "LEFT_DOWN")
+        if input_state["LEFT"]:
+            if "LEFT_DOWN" in tas_events:
+                tas_events.remove("LEFT_DOWN")
+            if "LEFT_UP" in tas_events:
+                tas_events.remove("LEFT_UP")
+            else:
+                tas_events.append("LEFT_UP")
         else:
-            tas_events.remove("LEFT_UP" if input_state["LEFT"] else "LEFT_DOWN")
+            if "LEFT_UP" in tas_events:
+                tas_events.remove("LEFT_UP")
+            if "LEFT_DOWN" in tas_events:
+                tas_events.remove("LEFT_DOWN")
+            else:
+                tas_events.append("LEFT_DOWN")
+
     if pygame.Rect((x+64, y+64), (16, 16)).collidepoint(mpos) and clicks[0]:
         CLICK_LOCK = clicks[0]
-        if ("RIGHT_UP" if input_state["RIGHT"] else "RIGHT_DOWN") not in tas_events:
-            tas_events.append("RIGHT_UP" if input_state["RIGHT"] else "RIGHT_DOWN")
+        if input_state["RIGHT"]:
+            if "RIGHT_UP" in tas_events:
+                tas_events.remove("RIGHT_UP")
+            if "RIGHT_DOWN" in tas_events:
+                tas_events.remove("RIGHT_DOWN")
+            else:
+                tas_events.append("RIGHT_UP")
         else:
-            tas_events.remove("RIGHT_UP" if input_state["RIGHT"] else "RIGHT_DOWN")
+            if "RIGHT_UP" in tas_events:
+                tas_events.remove("RIGHT_UP")
+            if "RIGHT_DOWN" in tas_events:
+                tas_events.remove("RIGHT_DOWN")
+            else:
+                tas_events.append("RIGHT_DOWN")
+
     if pygame.Rect((x+48, y+48), (16, 16)).collidepoint(mpos) and clicks[0]:
         CLICK_LOCK = clicks[0]
-        if ("UP_UP" if input_state["UP"] else "UP_DOWN") not in tas_events:
-            tas_events.append("UP_UP" if input_state["UP"] else "UP_DOWN")
+        if input_state["UP"]:
+            if "UP_DOWN" in tas_events:
+                tas_events.remove("UP_DOWN")
+            if "UP_UP" in tas_events:
+                tas_events.remove("UP_UP")
+            else:
+                tas_events.append("UP_UP")
         else:
-            tas_events.remove("UP_UP" if input_state["UP"] else "UP_DOWN")
+            if "UP_UP" in tas_events:
+                tas_events.remove("UP_UP")
+            if "UP_DOWN" in tas_events:
+                tas_events.remove("UP_DOWN")
+            else:
+                tas_events.append("UP_DOWN")
+
     if pygame.Rect((x+48, y+80), (16, 16)).collidepoint(mpos) and clicks[0]:
         CLICK_LOCK = clicks[0]
-        if ("DOWN_UP" if input_state["DOWN"] else "DOWN_DOWN") not in tas_events:
-            tas_events.append("DOWN_UP" if input_state["DOWN"] else "DOWN_DOWN")
+        if input_state["DOWN"]:
+            if "DOWN_DOWN" in tas_events:
+                tas_events.remove("DOWN_DOWN")
+            if "DOWN_UP" in tas_events:
+                tas_events.remove("DOWN_UP")
+            else:
+                tas_events.apppend("DOWN_UP")
         else:
-            tas_events.remove("DOWN_UP" if input_state["DOWN"] else "DOWN_DOWN")
+            if "DOWN_UP" in tas_events:
+                tas_events.remove("DOWN_UP")
+            if "DOWN_DOWN" in tas_events:
+                tas_events.remove("DOWN_DOWN")
+            else:
+                tas_events.append("DOWN_DOWN")
 
     if pygame.Rect((x+32+80, y+64), (16, 16)).collidepoint(mpos) and clicks[0]:
         CLICK_LOCK = clicks[0]
-        if ("A_UP" if input_state["A"] else "A_DOWN") not in tas_events:
-            tas_events.append("A_UP" if input_state["A"] else "A_DOWN")
+        if input_state["A"]:
+            if "A_UP" in tas_events:
+                tas_events.remove("A_UP")
+            else:
+                tas_events.append("A_UP")
         else:
-            tas_events.remove("A_UP" if input_state["A"] else "A_DOWN")
+            if "A_DOWN" in tas_events:
+                tas_events.remove("A_DOWN")
+            else:
+                tas_events.append("A_DOWN")
+
     if pygame.Rect((x+64+80, y+64), (16, 16)).collidepoint(mpos) and clicks[0]:
         CLICK_LOCK = clicks[0]
-        if ("X_UP" if input_state["X"] else "X_DOWN") not in tas_events:
-            tas_events.append("X_UP" if input_state["X"] else "X_DOWN")
+        if input_state["X"]:
+            if "X_UP" in tas_events:
+                tas_events.remove("X_UP")
+            else:
+                tas_events.append("X_UP")
         else:
-            tas_events.append("X_UP" if input_state["X"] else "X_DOWN")
+            if "X_DOWN" in tas_events:
+                tas_events.remove("X_DOWN")
+            else:
+                tas_events.append("X_DOWN")
+
     if pygame.Rect((x+48+80, y+48), (16, 16)).collidepoint(mpos) and clicks[0]:
         CLICK_LOCK = clicks[0]
-        if ("B_UP" if input_state["B"] else "B_DOWN") not in tas_events:
-            tas_events.append("B_UP" if input_state["B"] else "B_DOWN")
+        if input_state["B"]:
+            if "B_UP" in tas_events:
+                tas_events.remove("B_UP")
+            else:
+                tas_events.append("B_UP")
         else:
-            tas_events.remove("B_UP" if input_state["B"] else "B_DOWN")
+            if "B_DOWN" in tas_events:
+                tas_events.remove("B_DOWN")
+            else:
+                tas_events.append("B_DOWN")
+
     if pygame.Rect((x+48+80, y+80), (16, 16)).collidepoint(mpos) and clicks[0]:
         CLICK_LOCK = clicks[0]
-        if ("Y_UP" if input_state["Y"] else "Y_DOWN") not in tas_events:
-            tas_events.append("Y_UP" if input_state["Y"] else "Y_DOWN")
+        if input_state["DOWN"]:
+            if "Y_UP" in tas_events:
+                tas_events.remove("Y_UP")
+            else:
+                tas_events.append("Y_UP")
         else:
-            tas_events.remove("Y_UP" if input_state["Y"] else "Y_DOWN")
+            if "Y_DOWN" in tas_events:
+                tas_events.remove("Y_DOWN")
+            else:
+                tas_events.append("Y_DOWN")
+
 
     if tas_events and G["FRAME"] not in G["TAS"][input_state_key]:
         G["TAS"][input_state_key][G["FRAME"]] = tas_events
@@ -238,6 +308,7 @@ def update_input_deck(G, pos, input_state_key, clicks):
     
 def draw_input_deck(G, pos, input_state_key):
     input_state = inputs.get_state(input_state_key)
+    print(input_state)
     pygame.draw.rect(G["SCREEN"], (255, 255, 255), pygame.Rect(pos, (256, 128)))
     x, y = pos
     G["SCREEN"].blit(G["HEL16"].render("frame: {}".format(G["FRAME"]), 0, (0,0,0)), (x, y))
@@ -297,12 +368,12 @@ def run(G, noquit=False):
         exits = False
         if "-play" not in sys.argv:
             exits = tas_er(G) == "QUIT"
-    
+
         if inputs.update_tas(G["TAS"], G["FRAME"], noquit) == "QUIT" or exits:
             return
         G["FRAME"] += 1
 
-        worlds_for_updating = [frame.world for frame in G["FRAMES"].get_frames()]
+        worlds_for_updating = [frame.world for frame in filter(lambda f: f.active, G["FRAMES"].get_frames())]
 
         for world in G["WORLDS"].get_worlds():
 
@@ -319,7 +390,8 @@ def run(G, noquit=False):
         blitz = []
 
         for frame in G["FRAMES"].get_frames():
-            if not frame.active: continue
+            if not frame.active:
+                continue
             frame.update()
             position = frame.pos
             drawn = frame.drawn(DEBUG=G) if "DEBUG" in G and G["DEBUG"] else frame.drawn()

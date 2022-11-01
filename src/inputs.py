@@ -52,9 +52,9 @@ MAPPED_CONTROLLERS = {
     },
     "Xbox One S Controller": {
         "A"      : 0,
-        "B"      : 2,
+        "B"      : 3,
         "X"      : 1,
-        "Y"      : 3,
+        "Y"      : 4,
         "START"  : 7,
     },
     "Controller (Xbox for windows)": {
@@ -104,11 +104,10 @@ def update_sticks():
     if "PLAYER2" in STATES: return
     joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
     pygame.event.pump()
-    
+
     for joy in joysticks:
         if not joy.get_init():
             joy.init()
-
         for btn in range(joy.get_numbuttons()):
             if not joy.get_button(btn): continue
             if joy not in STICKS:
@@ -119,7 +118,7 @@ def update_sticks():
                 else:
                     return
 
-                if joy.get_name() in MAPPED_CONTROLLERS:
+                if joy.get_name() in MAPPED_CONTROLLERS:                    
                     controller_map = deepcopy(MAPPED_CONTROLLERS[joy.get_name()])
                 else:
                     controller_map = deepcopy(DEFAULT_CONTROLLER_MAP)
@@ -186,8 +185,10 @@ def update(noquit=False):
                         state["EVENTS"].append("{}_UP".format(key))
 
             elif e.type == JOYBUTTONDOWN and state["JOY"] is not None and e.instance_id == state["JOY"].get_instance_id():
+                print(e.button)
                 for key in inp_map:
                     if e.button == inp_map[key]:
+                        print(key, "found")
                         state[key] = 1
                         state["EVENTS"].append("{}_DOWN".format(key))
 
