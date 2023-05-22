@@ -17,6 +17,7 @@ set self state WAIT
 set self frame 0
 
 |WAIT:40|
+print here!
 if isframe MAIN
    killframe MAIN
 endif
@@ -24,6 +25,7 @@ if isframe MAIN2
    killframe MAIN2
 endif
 reset
+print here2!
 activate MENU
 set self frame LOOK
 set self frame 0

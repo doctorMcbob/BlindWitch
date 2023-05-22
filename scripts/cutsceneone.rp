@@ -15,9 +15,9 @@ if A_DOWN in inpEVENTS
    exec SCENE:300
    break
 endif
-focus BOOT self
+focus ROOT self
 
 |SCENE:300|
 sfx witch_cackle
-deactivate BOOT
+deactivate ROOT
 makeframe MENU mainmenu 0 0 1152 640

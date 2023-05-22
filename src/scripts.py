@@ -51,7 +51,7 @@ def load():
         SCRIPTS[name] = S.SCRIPTS[name]
 
 def get_script_map(name):
-    return SCRIPTS[name] if name in SCRIPTS else None
+    return deepcopy(SCRIPTS[name]) if name in SCRIPTS else None
 
 def resolve(reference, script, world, related=None, logfunc=print):
     cmd_idx = 0
@@ -62,7 +62,7 @@ def resolve(reference, script, world, related=None, logfunc=print):
             cmd_idx += 1
             continue
         cmd = evaluate_literals(cmd, reference, world, related=related, logfunc=logfunc)
-        cmd = resolve_operators(cmd, world, logfunc=logfunc)
+        cmd = resolve_operators(cmd, world, logfunc=logfunc, actor=reference)
 
         # resolve command!
         try:
@@ -99,6 +99,13 @@ def resolve(reference, script, world, related=None, logfunc=print):
                 else:
                     actor.attributes[att] = value
 
+            elif verb == "reassign":
+                actor, oldkey, newkey = cmd
+                if actor == "related" and related is not None:
+                    actor = related
+                actor = a.get_actor(reference) if actor == "self" else a.get_actor(actor)
+                actor.scripts[newkey] = actor.scripts.pop(oldkey)
+                    
             elif verb == "if":
                 conditional = cmd.pop(0)
                 if not conditional:
@@ -274,7 +281,15 @@ def resolve(reference, script, world, related=None, logfunc=print):
 
             elif verb == "songoff":
                 sounds.stop_song()
-            
+
+            elif verb == "offsetbgscrollx":
+                world_ref = cmd.pop(0)
+                worlds.get_world(world_ref).background_xscroll += float(cmd.pop(0))
+                
+            elif verb == "offsetbgscrolly":
+                world_ref = cmd.pop(0)
+                worlds.get_world(world_ref).background_yscroll += float(cmd.pop(0))
+                
             elif verb == "for": # gulp
                 key = cmd.pop(0)
                 target = deepcopy(cmd.pop())
@@ -366,6 +381,8 @@ def evaluate_literals(cmd, reference, world, related=None, logfunc=print):
     for idx in range(len(cmd)):
         token = cmd[idx]
         try:
+            if token == "WORLD?":
+                cmd[idx] = world.name
             if token == "RAND?":
                 cmd[idx] = randint(0, 1)
             if token == "song?":
@@ -420,7 +437,7 @@ def evaluate_literals(cmd, reference, world, related=None, logfunc=print):
             logfunc("Error evaluating {}... {}".format(token, e))
     return cmd
 
-def resolve_operators(cmd, world, logfunc=print):
+def resolve_operators(cmd, world, logfunc=print, actor=None):
     evaluated = []
     idx = 0
     line = deepcopy(cmd)
@@ -450,6 +467,12 @@ def resolve_operators(cmd, world, logfunc=print):
                 evaluated.append(choice(item))
             elif token == "len":
                 calculated = len(cmd.pop(idx+1))
+                evaluated.append(calculated)
+            elif token == "int":
+                calculated = int(cmd.pop(idx+1))
+                evaluated.append(calculated)
+            elif token == "str":
+                calculated = str(cmd.pop(idx+1))
                 evaluated.append(calculated)
             elif token == "countof":
                 calculated = cmd.pop(idx+1).count(cmd.pop(idx+1))
@@ -481,11 +504,14 @@ def resolve_operators(cmd, world, logfunc=print):
                 if token != "at":
                     if (type(left) == str and type(right) == int) or (type(right) == str and type(left) == int):
                         left, right = str(left), str(right)
+                else:
+                    right = int(right)
                 calculated = operators[token](left, right)
                 evaluated.append(calculated)
             else:
                 evaluated.append(token)
         except Exception as e:
+            print(actor)
             logfunc(line)
             logfunc("Error applying operators {}... {}".format(token, e))
         idx += 1

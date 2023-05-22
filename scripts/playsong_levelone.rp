@@ -8,6 +8,6 @@ set self state WAIT
 set self noWO 1
 
 |COLLIDE|
-if body in self.offsetkey
+if body in self.name
    set song_manager0 song firstLevel
 endif

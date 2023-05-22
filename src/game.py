@@ -2,6 +2,7 @@ import pygame
 
 import sys
 import os
+import random
 
 from src import inputs
 from src.utils import get_text_input
@@ -20,13 +21,14 @@ def load():
     worlds.load()
 
 def set_up():
+    random.seed()
     pygame.init()
     pygame.mixer.init()
     W = 1152 if "-w" not in sys.argv else int(sys.argv[sys.argv.index("-w")+1])
     H = 640 if "-h" not in sys.argv else int(sys.argv[sys.argv.index("-h")+1])
     G = {"W":W,"H":H}
     G["SCREEN"] = pygame.display.set_mode((W, H)) if "-f" not in sys.argv else pygame.display.set_mode((W, H), pygame.FULLSCREEN)
-    pygame.display.set_caption("Rage of the Blind Witch")
+    pygame.display.set_caption("Red Pants")
     G["HEL32"] = pygame.font.SysFont("Helvetica", 32)
     G["HEL16"] = pygame.font.SysFont("Helvetica", 16)
     G["SCREEN"].fill((255, 255, 255))
@@ -44,8 +46,8 @@ def set_up():
             sprites.get_sprite("icon"))
 
     inputs.set_defaults()    
-    frames.add_frame("BOOT", G["ROOT"], (G["W"], G["H"]), pos=(0, 0))
-
+    frames.add_frame("ROOT", G["ROOT"], (G["W"], G["H"]), pos=(0, 0))
+    pygame.mixer.music.set_volume(0.30)
     G["CLOCK"] = pygame.time.Clock()
     G["DEBUG"] = "-d" in sys.argv
     return G
@@ -83,6 +85,25 @@ def run(G, noquit=False):
             blitz.append((drawn, position))
 
         G["SCREEN"].blits(blitz)
+
+         # maybe remove FPS counter before release, dont worry about it for a while though
+        fps = G["CLOCK"].get_fps()
+        msg = ""
+        if fps < 15:
+            msg = 'very significant lag'
+        elif fps < 20:
+            msg = 'legit lag'
+        elif fps < 25:
+            msg = 'lag'
+        elif fps < 29:
+            msg = 'minor lag'
+        G["SCREEN"].blit(
+            G["HEL16"].render("FPS:{}".format(fps), 0, (0, 0, 0)),
+            (0, 0))
+        if msg:
+            G["SCREEN"].blit(
+                G["HEL16"].render(msg, 0, (0, 0, 0)),
+                (0, 16))
 
         pygame.display.update()
         printer.save_surface(G["SCREEN"])

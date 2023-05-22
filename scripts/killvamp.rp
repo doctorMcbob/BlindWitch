@@ -3,7 +3,7 @@ START:0 empty 0,0
 CHECK:0 empty 0,0
 
 |COLLIDE|
-if vamp == self.offsetkey
+if vamp == self.name
    set self state SPLODE
 endif
 

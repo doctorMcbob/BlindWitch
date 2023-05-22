@@ -13,4 +13,4 @@ set self _input_name PLAYER1
 song opening
 
 |WAIT:90|
-view BOOT openingcutscene
+view ROOT openingcutscene
