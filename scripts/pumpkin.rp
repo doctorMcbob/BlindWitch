@@ -7,6 +7,6 @@ ON:0 pumpkinon 0,0
 set self state OFF
 
 |COLLIDE|
-if body in self.name
+if self.gun
    set related state ON
 endif

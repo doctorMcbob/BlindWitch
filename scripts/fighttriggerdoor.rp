@@ -16,8 +16,10 @@ if self.target
 endif
 
 |WALL:0|
-if not COLLIDE?
-   set self tangible 1
+if self.tangible == 0
+   if not COLLIDE?
+      set self tangible 1
+   endif
 endif
 if exists self.target
    break

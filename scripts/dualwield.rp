@@ -48,7 +48,7 @@ if related.frame < 30
    break
 endif
 if related.state == GUN
-   if body in self.name
+   if self.gun
          if self.gun == related.name
       	 break
       endif

@@ -128,7 +128,7 @@ exec updateGun
 |SPLODE:0|
 sfx choiceof self.death_sounds
 exec splode
-create ghost1 self.name + ghost self.x self.y
+create ghost0 self.name + ghost self.x self.y
 goodbye
 
 |YCOLLISION|

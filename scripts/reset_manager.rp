@@ -17,15 +17,52 @@ set self state WAIT
 set self frame 0
 
 |WAIT:40|
-print here!
 if isframe MAIN
    killframe MAIN
 endif
 if isframe MAIN2
    killframe MAIN2
 endif
-reset
-print here2!
+
+create player10 player10 736 544
+move player10 graveyardstart
+create player20 player20 592 544
+move player20 graveyardstart
+create shotgun0 shotgun0 -2112 -48
+move shotgun0 graveyardleft
+
+create machinegun0 machinegun0 7760 -3664
+move machinegun0 castlemiddle
+create machinegun1 machinegun1 10608 -1312
+move machinegun1 castleentrence
+
+set ghost0 x -2288
+set ghost0 y -256
+set ghost0 state START
+set ghost0 frame 0
+
+if exists player10ghost
+   set player10ghost state OFF
+endif
+if exists player20ghost
+   set player20ghost state OFF
+endif
+
+create witch0 witch0 11216 -3520
+move witch0 castletop
+create eyeballtarget0 eyeballtarget0 11136 -3552
+move eyeballtarget0 castletop
+create eyeballtarget1 eyeballtarget1 11376 -3552
+move eyeballtarget1 castletop
+create eyeballtarget2 eyeballtarget2 11200 -3344
+move eyeballtarget2 castletop
+create eyeballtarget3 eyeballtarget3 11312 -3344
+move eyeballtarget3 castletop
+if exists FINALBOSS
+   set FINALBOSS state BYE
+endif
+
 activate MENU
-set self frame LOOK
+
 set self frame 0
+set self state LOOK

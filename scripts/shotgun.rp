@@ -10,6 +10,7 @@ set self timer 0
 set self state GUN
 set self aim 0
 set self bullet_num 0
+set self bullet_max 20
 set self bul_xv 25
 set self bul_yv -5
 set self rotation 0
@@ -47,7 +48,7 @@ if related.frame < 30
    break
 endif
 if related.state == GUN
-   if body in self.name
+   if self.gun
       if self.gun == related.name
       	 break
       endif
@@ -213,6 +214,9 @@ if self.direction == 1
          set self.blast y self.y + 8
       endfor
    endif
+endif
+if self.bullet_num > self.bullet_max
+   set self bullet_num 0
 endif
 
 if self.aim == 0

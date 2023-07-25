@@ -31,6 +31,7 @@ END:0 deamondie0 0,0
 END:4 deamondie1 0,0
 END:8 deamondie2 0,0
 END:16 deamondie3 0,0
+BYE:0 empty 0,0
 
 |START:0|
 set self state WAIT
@@ -198,3 +199,5 @@ endif
 set self tx self.target.x
 set self ty self.target.y
 
+|BYE:0|
+goodbye

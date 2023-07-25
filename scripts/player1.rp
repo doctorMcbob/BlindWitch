@@ -3,11 +3,8 @@ START:0 empty 0,0
 BEGIN:0 empty 0,0
 
 |START:0|
-set self state BEGIN
-set self frame 0
-
-|BEGIN:0|
-if isframe MAIN
+set self calc isframe MAIN
+if self.calc
    set self _input_name PLAYER1
    focus MAIN self
    set self frame_name MAIN
@@ -15,9 +12,4 @@ if isframe MAIN
    set self tangible 1
    set self respawnx self.x
    set self respawny self.y
-endif
-
-set self calc isframe MAIN
-if not self.calc
-   goodbye
 endif

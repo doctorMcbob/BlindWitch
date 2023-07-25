@@ -5,7 +5,7 @@ RING:5 ring1 -16,0
 
 |START:0|
 set self state RING
-self self frame 0
+set self frame 0
 
 |RING:10|
 goodbye

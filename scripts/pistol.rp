@@ -11,6 +11,7 @@ set self timer self.timer_max
 set self state GUN
 set self aim 0
 set self bullet_num 0
+set self bullet_max 20
 set self bul_xv 25
 set self bul_yv -3
 set self rotation 0
@@ -56,9 +57,11 @@ if related.frame < 30
    break
 endif
 if related.state == GUN
-   if player in self.name and self.gun
+   set self calc player10 == self.name
+   set self calc player20 == self.name or self.calc
+   if self.calc and self.gun
       if self.gun == related.name
-      	 break
+      	break
       endif
       set related frame 0
       set self.gun frame 0
@@ -66,18 +69,18 @@ if related.state == GUN
       set self.gun state GUN
       if pistol in self.gun
          set self.gun state OFF
-	 set related state DUAL
+	      set related state DUAL
 	 
          set self calc self.name in self.gun
-      	 if self.calc
-       	    set self.gun state DUAL
-	    set related state OFF
-	    break
-	 endif
-	 if not self.calc
-	    set self gun related.name
+      	if self.calc
+       	   set self.gun state DUAL
+	         set related state OFF
+	         break
+	      endif
+	      if not self.calc
+	         set self gun related.name
             break
-	 endif
+         endif
       endif
       set self gun related.name
       set self.gun state HELD
@@ -225,6 +228,9 @@ if self.direction == 1
       set self.blast x self.x - 16
       set self.blast y self.y + 8
    endif
+endif
+if self.bullet_num > self.bullet_max
+   set self bullet_num 0
 endif
 
 if self.aim == 0

@@ -2,6 +2,7 @@ DOOR|0,0,0,0|False|
 START:0 spike 0,0
 SPIKE:0 spike 0,0
 FLY:0 spike 0,0
+OFF:0 empty 0,0
 
 |START:0|
 set self state SPIKE
@@ -10,10 +11,9 @@ set self physics 1
 set self speed -25
 set self orig_x self.x
 set self orig_y self.y
+hitboxes spike
 
 |SPIKE:0|
-set self frame 0
-hitboxes spike
 set self calc1 0
 set self calc2 0
 set self calc3 0
@@ -41,10 +41,22 @@ endif
 |FLY:0|
 set self y_vel self.speed
 
-|FLY:400|
+|FLY:280|
 set self x self.orig_x
 set self y self.orig_y
 set self y_vel 0
+if COLLIDE?
+   set self state OFF
+   break
+endif
+set self state SPIKE
+set self frame 0
+
+|OFF:0|
+if not COLLIDE?
+   set self state SPIKE
+   set self frame 0
+endif
 
 |HIT|
 set self state SPLODE

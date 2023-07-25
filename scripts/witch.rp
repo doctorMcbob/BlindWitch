@@ -25,7 +25,6 @@ TRANSFORM:121 witchtransform7 0,0
 OFF:0 empty 0,0
 WAIT:0 empty 0,0
 
-
 |START:0|
 set self state WAIT
 set self frame 0
@@ -33,6 +32,7 @@ set self hits 12
 set self throw_x 5
 set self throw_y -8
 set self eye_num 0
+set self eye_max 10
 set self speed 8
 set self timer_max 20
 set self timer 0
@@ -125,3 +125,6 @@ for ___ thr
    set self.eye_name direction self.direction
 endfor
 
+if self.eye_num > self.eye_max
+   set self eye_num 0
+endif

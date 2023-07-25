@@ -8,6 +8,7 @@ PHASE:15 ghost3 -16,-16
 PHASE:25 ghost2 0,0
 PHASE:30 ghost1 0,0
 PHASE:35 ghost0 0,0
+OFF:0 empty 0,0
 
 |START:0|
 set self state WAIT
@@ -51,7 +52,8 @@ if self.calc2 < self.calc1
 endif
 set self calc exists self.target
 if not self.calc
-   goodbye
+   set self state OFF
+   break
 endif
 set self speed self.long_speed
 if self.dist < 512

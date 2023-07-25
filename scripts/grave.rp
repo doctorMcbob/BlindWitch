@@ -31,7 +31,6 @@ if self.timer > 0
 endif
 set self state SPAWN
 set self frame 0
-sfx zombie_rise
 
 |SPAWN:35|
 set self state WAIT
