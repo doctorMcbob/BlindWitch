@@ -4315,7 +4315,6 @@ SCRIPTS = {'WOce_cm': {'START:0': [['#', 'to', 'is', '_left,', 'from', 'is', '_r
                                ['endif'],
                                ['create', 'player10', 'player10', '736', '544'],
                                ['move', 'player10', 'graveyardstart'],
-                               ['move', 'player10', 'castlemiddle'],
                                ['create', 'player20', 'player20', '592', '544'],
                                ['move', 'player20', 'graveyardstart'],
                                ['create',
