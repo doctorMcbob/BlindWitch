@@ -2,7 +2,7 @@ EYE|0,0,0,0|False|
 START:0 empty -16,-16
 TARGET:0 eyetarget0 -16,-16
 SPLODE:0 eyetarget1 -16,-16
-HIT:0 eyetarget1 -16,-16
+SHIT:0 eyetarget1 -16,-16
 OFF:0 empty 0,0
 
 |START:0|
@@ -12,15 +12,15 @@ hurtboxes eyeball
 
 |SPLODE:0|
 exec splode
-set self state HIT
+set self state SHIT
 set self frame 0
 
-|HIT:20|
+|SHIT:20|
 if witch0.state != RAGE
    break
 endif
 sfx witch_hit
-set witch0 state HIT
+set witch0 state SHIT
 set self state TARGET
 set self frame 0
 

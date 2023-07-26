@@ -2047,7 +2047,7 @@ int resolve_script(int scriptIdx, Actor *self, Actor *related, World *world,
           a = get_actor(leftValue);
 
         if (a == NULL) {
-          printf("Actor %s error: ", get_string(self->name));
+          printf("Actor %s (%s) error: ", get_string(self->name), related == NULL ? "None" : get_string(related->name));
           print_statement(statement);
           printf("Could not find actor for dot\n");
           break;
@@ -2682,6 +2682,7 @@ int resolve_script(int scriptIdx, Actor *self, Actor *related, World *world,
       int script = find_script_from_map(self, state, frame);
       free(scriptValueStr);
       if (script != -1) {
+        
         int resolution = resolve_script(script, self, related, world, debug, -1,
                                         0, 0, 0, 0, 0);
         if (resolution < 0)

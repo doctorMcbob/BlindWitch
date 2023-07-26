@@ -17,11 +17,11 @@ FIREBALL:12 deamonfireballshoot 0,0
 ZAP:0 deamonzapstart 0,0
 ZAP:10 deamonzapshoot 0,0
 SPLODE:0 deamonhit0 0,0
-HIT:0 deamonhit0 0,0
-HIT:8 deamonhit1 0,0
-HIT:11 deamonhit0 0,0
-HIT:19 deamonhit1 0,0
-HIT:21 deamonhit0 0,0
+SHIT:0 deamonhit0 0,0
+SHIT:8 deamonhit1 0,0
+SHIT:11 deamonhit0 0,0
+SHIT:19 deamonhit1 0,0
+SHIT:21 deamonhit0 0,0
 DIE:0 deamondie0 0,0
 DIE:4 deamondie1 0,0
 DIE:8 deamondie2 0,0
@@ -103,10 +103,10 @@ set self frame 0
 
 |SPLODE:0|
 exec splode
-set self state HIT
+set self state SHIT
 set self frame 0
 
-|HIT:29|
+|SHIT:29|
 set self hits self.hits - 1
 set self state WAIT
 set self frame 0

@@ -24,7 +24,7 @@ if isframe MENU
 endif
 
 
-create player10 player10 736 544
+create player10 player10  736 544
 move player10 graveyardstart
 create player20 player20 592 544
 move player20 graveyardstart

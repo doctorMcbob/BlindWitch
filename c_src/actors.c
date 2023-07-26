@@ -544,6 +544,7 @@ int update_actor(int actorKey, int worldKey, int debug) {
   if (x_flag != actor->x_vel && _floor(actor->x_vel) == 0) {
     int scriptKey = find_script_from_map(actor, XCOLLISION, -1);
     if (scriptKey != -1) {
+
       int resolution = resolve_script(scriptKey, actor, NULL, world, debug, -1,
                                       -1, -1, -1, -1, 0);
 
@@ -572,7 +573,7 @@ int update_actor(int actorKey, int worldKey, int debug) {
     if (actor->name == buffer[idx])
       continue;
     Actor *actor2 = get_actor(buffer[idx]);
-    if (actor2 == NULL)
+    if (actor2 == NULL || actor2 == actor)
       continue;
     int resolution = hit_check(actor, actor2, world, debug);
     if (resolution < 0)
@@ -773,6 +774,7 @@ int hit_check(Actor *self, Actor *related, World *world, int debug) {
         if (scriptKey != -1) {
           int resolution = resolve_script(scriptKey, self, related, world,
                                           debug, -1, -1, -1, -1, -1, 0);
+          
           if (resolution < 0) {
             return resolution;
           }

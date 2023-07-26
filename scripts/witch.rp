@@ -3,11 +3,11 @@ START:0 empty 0,0
 FLY:0 witchfly 0,0
 RAGE:0 witchrage0 0,0
 RAGE:10 witchrage1 0,0
-HIT:0 witchhit0 0,0
-HIT:4 witchhit1 0,0
-HIT:8 witchhit0 0,0
-HIT:12 witchhit1 0,0
-HIT:16 witchhit0 0,0
+SHIT:0 witchhit0 0,0
+SHIT:4 witchhit1 0,0
+SHIT:8 witchhit0 0,0
+SHIT:12 witchhit1 0,0
+SHIT:16 witchhit0 0,0
 THROW:0 witchthrow0 0,0
 THROW:10 witchthrow1 0,0
 TRANSFORM:0 witchtransform0 0,0
@@ -38,6 +38,7 @@ set self timer_max 20
 set self timer 0
 set self d -1
 hitboxes witch
+hurtboxes witch
 
 |FLY:0|
 sfx witch_cackle
@@ -77,7 +78,7 @@ exec throw
 set self state RAGE
 set self frame 0
 
-|HIT:20|
+|SHIT:20|
 if self.hits > 0
    if self.hits < 4
       sfx witch_no
